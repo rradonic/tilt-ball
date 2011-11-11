@@ -1,8 +1,8 @@
 /*
 This file is part of TiltBall.
-http://sourceforge.net/projects/tiltball
+http://github.com/rradonic/tilt-ball
 
-Copyright (C) 2009 Ranko Radonić
+Copyright (C) 2009-2011 Ranko Radonić
 
 TiltBall is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
