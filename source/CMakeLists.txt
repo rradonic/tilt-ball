@@ -1,0 +1,27 @@
+include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(/usr/include/OGRE)
+include_directories(/usr/local/include/bullet)
+
+add_executable(tilt_ball
+  BulletDebugDrawer.cpp
+  Engine.cpp
+  GameState.cpp
+  InputSystem.cpp
+  IntroState.cpp
+  Main.cpp
+  MenuState.cpp
+  OgreMotionState.cpp
+  RunningState.cpp
+  Level.cpp
+  WallCoordinates.cpp
+  WorldObject.cpp)
+
+target_link_libraries(tilt_ball
+  LinearMath
+  BulletCollision
+  BulletDynamics
+  BulletSoftBody
+  OgreMain
+  OIS
+  CEGUIBase
+  CEGUIOgreRenderer)
