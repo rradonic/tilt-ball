@@ -1,0 +1,19 @@
+material Materials/Level1Wall
+{
+    receive_shadows on
+
+    technique
+    {
+        pass
+        {
+            diffuse 1.0 1.0 1.0
+            specular 1.0 1.0 1.0 5.0
+
+            texture_unit
+            {
+                texture ../resources/materials/level-1-wall.jpg
+                scale 4 4
+            }
+        }
+    }
+}

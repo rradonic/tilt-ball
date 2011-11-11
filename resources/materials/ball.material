@@ -1,0 +1,18 @@
+material Materials/Ball
+{
+    receive_shadows on
+
+    technique
+    {
+        pass
+        {
+            diffuse 1.0 1.0 1.0
+            specular 0.2 0.2 0.2 10.0
+
+            texture_unit
+            {
+                texture ../resources/materials/ball.jpg
+            }
+        }
+    }
+}
