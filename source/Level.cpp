@@ -43,6 +43,7 @@ namespace TiltBall
         std::clog << "Setting up camera..." << std::endl;
         Ogre::Camera* camera = m_engine->getOgreRoot()->getSceneManager("main_scene_manager")->
             createCamera("main_camera");
+
         camera->setNearClipDistance(1.0f);
         camera->setFarClipDistance(500.0f);
         camera->setAutoAspectRatio(true);
@@ -53,6 +54,7 @@ namespace TiltBall
         std::clog << "Setting up viewport..." << std::endl;
         Ogre::Viewport* viewport = m_engine->getOgreRoot()->getRenderTarget("main_window")->
             addViewport(camera, 0);
+
         viewport->setBackgroundColour(Ogre::ColourValue(0, 0, 0));
 
         constructLevel();
@@ -66,9 +68,14 @@ namespace TiltBall
 
         // build bottom surface
         std::clog << "Creating bottom surface..." << std::endl;
-        WorldObject bottomSurface =
-            buildBottomSurface("bottom_surface", "Materials/Level1Floor",
-                               m_levelXMin, m_levelYMin, m_levelZMin, m_levelXMax, m_levelYMax, m_levelZMax);
+        WorldObject bottomSurface = buildBottomSurface("bottom_surface", "Materials/Level1Floor",
+                                                       m_levelXMin,
+                                                       m_levelYMin,
+                                                       m_levelZMin,
+                                                       m_levelXMax,
+                                                       m_levelYMax,
+                                                       m_levelZMax);
+
         m_level->attachObject(bottomSurface.getMovableObject());
         compoundShape->addChildShape(bottomSurface.getTransform(), bottomSurface.getCollisionShape());
 
@@ -81,10 +88,12 @@ namespace TiltBall
             wallNameStream << "wall" << wallNumber;
 
             // build walls
-            WorldObject wall =
-                buildWall(wallNameStream.str(), "Materials/Level1Wall",
-                          (*iter).getBeginX(), (*iter).getBeginZ(),
-                          (*iter).getEndX(), (*iter).getEndZ());
+            WorldObject wall = buildWall(wallNameStream.str(),
+                                         "Materials/Level1Wall",
+                                         (*iter).getBeginX(),
+                                         (*iter).getBeginZ(),
+                                         (*iter).getEndX(),
+                                         (*iter).getEndZ());
 
             m_level->attachObject(wall.getMovableObject());
             compoundShape->addChildShape(wall.getTransform(), wall.getCollisionShape());
@@ -108,7 +117,8 @@ namespace TiltBall
                                                            levelLocalInertia);
 
         m_levelBody = new btRigidBody(levelInfo);
-        m_levelBody->setCollisionFlags(m_levelBody->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
+        m_levelBody->setCollisionFlags(m_levelBody->getCollisionFlags() |
+                                       btCollisionObject::CF_KINEMATIC_OBJECT);
         m_levelBody->setActivationState(DISABLE_DEACTIVATION);
         m_engine->getDynamicsWorld()->addRigidBody(m_levelBody);
 
@@ -191,19 +201,28 @@ namespace TiltBall
 
     WorldObject Level::buildBottomSurface(std::string p_name,
                                           std::string p_material,
-                                          float p_x1, float p_y1,
-                                          float p_z1, float p_x2,
-                                          float p_y2, float p_z2)
+                                          float p_x1,
+                                          float p_y1,
+                                          float p_z1,
+                                          float p_x2,
+                                          float p_y2,
+                                          float p_z2)
     {
-        return buildBox(p_name, p_material, p_x1 - m_wallHalfThickness, p_y1,
-                        p_z1 - m_wallHalfThickness, p_x2 + m_wallHalfThickness, p_y2,
+        return buildBox(p_name, p_material,
+                        p_x1 - m_wallHalfThickness,
+                        p_y1,
+                        p_z1 - m_wallHalfThickness,
+                        p_x2 + m_wallHalfThickness,
+                        p_y2,
                         p_z2 + m_wallHalfThickness);
     }
 
     WorldObject Level::buildWall(std::string p_name,
                                  std::string p_material,
-                                 int p_pointBeginX, int p_pointBeginZ,
-                                 int p_pointEndX, int p_pointEndZ)
+                                 int p_pointBeginX,
+                                 int p_pointBeginZ,
+                                 int p_pointEndX,
+                                 int p_pointEndZ)
     {
         static float extrusion = 0.001;
         if (p_pointBeginX > p_pointEndX)
@@ -224,8 +243,14 @@ namespace TiltBall
         return buildBox(p_name, p_material, wallX1, wallY1, wallZ1, wallX2, wallY2, wallZ2);
     }
 
-    WorldObject Level::buildBox(std::string p_name, std::string p_material,
-                                float p_x1, float p_y1, float p_z1, float p_x2, float p_y2, float p_z2)
+    WorldObject Level::buildBox(std::string p_name,
+                                std::string p_material,
+                                float p_x1,
+                                float p_y1,
+                                float p_z1,
+                                float p_x2,
+                                float p_y2,
+                                float p_z2)
     {
         Ogre::ManualObject* manual = m_engine->getOgreRoot()->
             getSceneManager("main_scene_manager")->createManualObject(p_name);

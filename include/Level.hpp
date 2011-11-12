@@ -35,13 +35,19 @@ namespace TiltBall
     {
     public:
         explicit Level(Engine* p_engine, std::string p_nodeName);
+
         Level(const Level& p_other) = delete;
+
         Level& operator=(const Level& p_other) = delete;
+
         ~Level();
 
         btRigidBody* getLevelBody();
+
         btRigidBody* getBallBody();
+
         Ogre::SceneNode* getLevelNode();
+
         Ogre::SceneNode* getBallNode();
 
     protected:
@@ -49,18 +55,41 @@ namespace TiltBall
         Ogre::SceneNode* m_ball;
 
     private:
-        Ogre::SceneNode* createSceneNode(Engine* p_engine, std::string p_nodeName);
-        void load(std::string p_levelFileName);
-        bool getNonEmptyLine(std::ifstream& p_file, std::istringstream& p_lineStream);
+        Ogre::SceneNode* createSceneNode(Engine* p_engine,
+                                         std::string p_nodeName);
 
-        WorldObject buildBox(std::string p_name, std::string p_material,
-            float p_x1, float p_y1, float p_z1, float p_x2, float p_y2, float p_z2);
-        WorldObject buildBottomSurface(std::string p_name, std::string p_material,
-            float p_x1, float p_y1, float p_z1, float p_x2, float p_y2, float p_z2);
-        WorldObject buildWall(std::string p_name, std::string p_material,
-            int p_pointBeginX, int p_pointBeginZ, int p_pointEndX, int p_pointEndZ);
+        void load(std::string p_levelFileName);
+
+        bool getNonEmptyLine(std::ifstream& p_file,
+                             std::istringstream& p_lineStream);
+
+        WorldObject buildBox(std::string p_name,
+                             std::string p_material,
+                             float p_x1,
+                             float p_y1,
+                             float p_z1,
+                             float p_x2,
+                             float p_y2,
+                             float p_z2);
+
+        WorldObject buildBottomSurface(std::string p_name,
+                                       std::string p_material,
+                                       float p_x1,
+                                       float p_y1,
+                                       float p_z1,
+                                       float p_x2,
+                                       float p_y2,
+                                       float p_z2);
+
+        WorldObject buildWall(std::string p_name,
+                              std::string p_material,
+                              int p_pointBeginX,
+                              int p_pointBeginZ,
+                              int p_pointEndX,
+                              int p_pointEndZ);
 
         void constructLevel();
+
         void constructBall();
 
         Engine* m_engine;

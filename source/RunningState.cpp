@@ -104,7 +104,7 @@ namespace TiltBall
     bool RunningState::keyPressed(const OIS::KeyEvent &evt)
     {
         if (evt.key == OIS::KC_Q)
-            m_engine->requestPop();
+            m_engine->requestQuit();
         if (evt.key == OIS::KC_ESCAPE)
             m_engine->pushState(new MenuState(m_engine));
 

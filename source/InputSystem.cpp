@@ -24,8 +24,9 @@ namespace TiltBall
 {
     InputSystem::InputSystem(Ogre::Root* p_ogreRoot) :
         m_inputManager(createInputSystem(p_ogreRoot)),
-        m_keyboard(dynamic_cast<OIS::Keyboard*>(m_inputManager-> createInputObject(OIS::OISKeyboard, true))),
-        m_mouse(dynamic_cast<OIS::Mouse*>(m_inputManager-> createInputObject(OIS::OISMouse, true))),
+        m_keyboard(dynamic_cast<OIS::Keyboard*>(m_inputManager->
+                                                createInputObject(OIS::OISKeyboard, true))),
+        m_mouse(dynamic_cast<OIS::Mouse*>(m_inputManager->createInputObject(OIS::OISMouse, true))),
         m_inputSystemDestroyed(false)
     {
         unsigned int width, height, depth;

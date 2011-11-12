@@ -31,15 +31,20 @@ namespace TiltBall
         m_dispatcher(new btCollisionDispatcher(m_collisionConfiguration)),
         m_broadphase(new btDbvtBroadphase()),
         m_solver(new btSequentialImpulseConstraintSolver()),
-        m_dynamicsWorld(new btDiscreteDynamicsWorld(m_dispatcher, m_broadphase, m_solver, m_collisionConfiguration)),
+        m_dynamicsWorld(new btDiscreteDynamicsWorld(m_dispatcher,
+                                                    m_broadphase,
+                                                    m_solver,
+                                                    m_collisionConfiguration)),
 
         m_inputSystem(new InputSystem(getOgreRoot())),
-        m_ceguiRenderer(&CEGUI::OgreRenderer::bootstrapSystem(*(getOgreRoot()->getRenderTarget("main_window")))),
+        m_ceguiRenderer(&CEGUI::OgreRenderer::bootstrapSystem(*(getOgreRoot()->
+                                                                getRenderTarget("main_window")))),
         m_timeSinceLastFrame(0),
         m_requestPop(false)
     {
         std::clog << "Setting up resource manager..." << std::endl;
-        Ogre::ResourceGroupManager* resourceGroupManager = Ogre::ResourceGroupManager::getSingletonPtr();
+        Ogre::ResourceGroupManager* resourceGroupManager =
+            Ogre::ResourceGroupManager::getSingletonPtr();
 
         resourceGroupManager->addResourceLocation("../resources", "FileSystem", "General", true);
 
@@ -166,11 +171,18 @@ namespace TiltBall
         m_inputSystem->getMouse()->setEventCallback(m_states.back());
 
         delete oldState;
+
+        m_requestPop = false;
     }
 
     void Engine::requestPop()
     {
         m_requestPop = true;
+    }
+
+    void Engine::requestQuit()
+    {
+        m_requestQuit = true;
     }
 
     void Engine::mainLoop()
@@ -181,10 +193,9 @@ namespace TiltBall
         while(keepRendering)
         {
             if(m_requestPop)
-            {
                 popState();
-                m_requestPop = false;
-            }
+            if(m_requestQuit)
+                break;
             if(m_states.size() == 0)
                 break;
 

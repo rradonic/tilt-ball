@@ -32,20 +32,29 @@ namespace TiltBall
     {
     public:
         explicit RunningState(Engine* p_engine);
+
         RunningState(const RunningState& p_other) = delete;
+
         RunningState& operator=(const RunningState& p_other) = delete;
+
         ~RunningState();
 
         void pause();
+
         void resume();
 
         bool update(const Ogre::FrameEvent& p_event);
 
         bool mouseMoved(const OIS::MouseEvent &evt);
-        bool mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID);
-        bool mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID);
+
+        bool mousePressed(const OIS::MouseEvent &evt,
+                          OIS::MouseButtonID);
+
+        bool mouseReleased(const OIS::MouseEvent &evt,
+                           OIS::MouseButtonID);
 
         bool keyPressed(const OIS::KeyEvent &evt);
+
         bool keyReleased(const OIS::KeyEvent &evt);
 
     private:

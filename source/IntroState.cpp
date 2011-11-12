@@ -71,10 +71,12 @@ namespace TiltBall
 
         if(m_textureUnitState)
         {
-            // Set the m_alpha value of the m_fadeOverlay
-            m_textureUnitState->setAlphaOperation(Ogre::LBX_MODULATE, Ogre::LBS_MANUAL,
-                Ogre::LBS_TEXTURE, m_alpha);    // Change the m_alpha operation
+            m_textureUnitState->setAlphaOperation(Ogre::LBX_MODULATE,
+                                                  Ogre::LBS_MANUAL,
+                                                  Ogre::LBS_TEXTURE,
+                                                  m_alpha);    // Change the m_alpha operation
 
+            // Set the m_alpha value of the m_fadeOverlay
             m_alpha = 1.0 - (float)m_elapsedMilliseconds / (float)m_totalMilliseconds;
         }
 
@@ -86,12 +88,14 @@ namespace TiltBall
         return true;
     }
 
-    bool IntroState::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID)
+    bool IntroState::mousePressed(const OIS::MouseEvent &evt,
+                                  OIS::MouseButtonID)
     {
         return true;
     }
 
-    bool IntroState::mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID)
+    bool IntroState::mouseReleased(const OIS::MouseEvent &evt,
+                                   OIS::MouseButtonID)
     {
         return true;
     }
