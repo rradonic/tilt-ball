@@ -34,10 +34,13 @@ namespace TiltBall
     {
     public:
         explicit GameState(Engine* p_engine);
+
         virtual ~GameState() = 0;
 
         virtual void pause() = 0;
+
         virtual void resume() = 0;
+
         virtual bool update(const Ogre::FrameEvent& p_event) = 0;
 
     protected:

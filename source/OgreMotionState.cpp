@@ -22,7 +22,8 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace TiltBall
 {
-    OgreMotionState::OgreMotionState(btTransform &p_initialpos, Ogre::SceneNode *p_node)
+    OgreMotionState::OgreMotionState(btTransform &p_initialpos,
+                                     Ogre::SceneNode *p_node)
     {
         m_node = p_node;
         m_position = p_initialpos;

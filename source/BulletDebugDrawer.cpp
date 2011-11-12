@@ -27,7 +27,10 @@ namespace TiltBall
 {
     BulletDebugDrawer::BulletDebugDrawer(Engine* p_engine) :
         m_engine(p_engine),
-        m_material(dynamic_cast<Ogre::Material*>(Ogre::MaterialManager::getSingletonPtr()->create("Debug/BulletDebugDrawMaterial","Debugging").get()))
+        m_material(
+            dynamic_cast<Ogre::Material*>(
+                Ogre::MaterialManager::getSingletonPtr()->create("Debug/BulletDebugDrawMaterial",
+                                                                 "Debugging").get()))
     {
         m_material->setReceiveShadows(false);
         m_material->getTechnique(0)->setLightingEnabled(true);
@@ -36,15 +39,19 @@ namespace TiltBall
         m_material->getTechnique(0)->getPass(0)->setSelfIllumination(0,0,1);
     }
 
-    void BulletDebugDrawer::drawLine(const btVector3 &p_from, const btVector3 &p_to, const btVector3 &p_color)
+    void BulletDebugDrawer::drawLine(const btVector3 &p_from,
+                                     const btVector3 &p_to,
+                                     const btVector3 &p_color)
     {
-        Ogre::SceneManager* sceneManager = m_engine->getOgreRoot()->getSceneManager("main_scene_manager");
+        Ogre::SceneManager* sceneManager = m_engine->getOgreRoot()->
+            getSceneManager("main_scene_manager");
 
         std::ostringstream lineNodeName;
         lineNodeName << "lineNode" << m_lines.size();
         std::ostringstream lineObjectName;
         lineObjectName << "lineObject" << m_lines.size();
-        Ogre::SceneNode* manualObjectNode = sceneManager->getRootSceneNode()->createChildSceneNode(lineNodeName.str());
+        Ogre::SceneNode* manualObjectNode = sceneManager->getRootSceneNode()->
+            createChildSceneNode(lineNodeName.str());
         Ogre::ManualObject* manualObject = sceneManager->createManualObject(lineObjectName.str());
 
         manualObject->begin("Debug/BulletDebugMaterial", Ogre::RenderOperation::OT_LINE_LIST);
@@ -58,23 +65,32 @@ namespace TiltBall
 
     void BulletDebugDrawer::clear()
     {
-        Ogre::SceneManager* sceneManager = m_engine->getOgreRoot()->getSceneManager("main_scene_manager");
+        Ogre::SceneManager* sceneManager =
+            m_engine->getOgreRoot()->getSceneManager("main_scene_manager");
 
         std::vector<Ogre::SceneNode*>::iterator iter;
         for(iter = m_lines.begin(); iter < m_lines.end(); iter++)
         {
-            Ogre::ManualObject* manualObject = dynamic_cast<Ogre::ManualObject*>((*iter)->getAttachedObject(0));
-            std::clog << std::string("Destroying line object ") + manualObject->getName() << std::endl;
+            Ogre::ManualObject* manualObject =
+                dynamic_cast<Ogre::ManualObject*>((*iter)->getAttachedObject(0));
+
+            std::clog <<
+                std::string("Destroying line object ") + manualObject->getName() << std::endl;
             (*iter)->detachObject(manualObject);
             sceneManager->destroyManualObject(manualObject);
+
             std::clog << std::string("Destroying line node ") + (*iter)->getName() << std::endl;
             sceneManager->getRootSceneNode()->removeAndDestroyChild((*iter)->getName());
         }
+
         m_lines.clear();
     }
 
-    void BulletDebugDrawer::drawContactPoint(const btVector3& p_pointOnB, const btVector3& p_normalOnB,
-                                             btScalar p_distance, int p_lifeTime, const btVector3& p_color)
+    void BulletDebugDrawer::drawContactPoint(const btVector3& p_pointOnB,
+                                             const btVector3& p_normalOnB,
+                                             btScalar p_distance,
+                                             int p_lifeTime,
+                                             const btVector3& p_color)
     {
     }
 

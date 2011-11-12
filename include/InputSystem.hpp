@@ -30,15 +30,21 @@ namespace TiltBall
     {
     public:
         explicit InputSystem(Ogre::Root* p_root);
+
         InputSystem(const InputSystem& p_other) = delete;
+
         InputSystem& operator=(const InputSystem& p_other) = delete;
+
         ~InputSystem();
 
         void capture();
+
         const OIS::MouseState& getMouseState();
+
         bool isKeyDown(OIS::KeyCode p_key);
 
         OIS::Keyboard* getKeyboard();
+
         OIS::Mouse* getMouse();
 
     private:

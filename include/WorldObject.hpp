@@ -34,7 +34,9 @@ namespace TiltBall
                              btTransform m_transform);
 
         Ogre::MovableObject* getMovableObject();
+
         btCollisionShape* getCollisionShape();
+
         btTransform getTransform();
 
     private:

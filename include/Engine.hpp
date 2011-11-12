@@ -41,8 +41,11 @@ namespace TiltBall
     {
     public:
         explicit Engine();
+
         Engine(const Engine& p_other) = delete;
+
         Engine& operator=(const Engine& p_other) = delete;
+
         ~Engine();
 
         void pushState(GameState* p_state);
@@ -52,11 +55,16 @@ namespace TiltBall
         bool frameStarted(const Ogre::FrameEvent& p_event);
 
         Ogre::Root* getOgreRoot();
+
         InputSystem* getInputSystem();
+
         btDiscreteDynamicsWorld* getDynamicsWorld();
+
         BulletDebugDrawer* getDebugDrawer();
 
         void requestPop();
+
+        void requestQuit();
 
         float getTimeSinceLastFrame();
 
@@ -64,7 +72,9 @@ namespace TiltBall
         void popState();
 
         static constexpr float INPUT_UPDATE_INTERVAL = 0.02;
-        // heap object because we have to allocate it within a method and return it from the method
+
+        // heap object because we have to allocate it within a method
+        // and return it from the method
         Ogre::Root* m_ogreRoot;
         Ogre::Root* createOgreRoot();
 
@@ -83,6 +93,7 @@ namespace TiltBall
         std::vector<GameState*> m_states;
 
         bool m_requestPop;
+        bool m_requestQuit;
     };
 }
 
