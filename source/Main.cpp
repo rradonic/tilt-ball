@@ -31,7 +31,7 @@ int main()
     {
         std::ofstream log("tilt_ball.log");
 
-        std::streambuf* old = std::clog.rdbuf(log.rdbuf());
+        std::streambuf *old = std::clog.rdbuf(log.rdbuf());
 
         TiltBall::Engine engine;
         engine.pushState(new TiltBall::RunningState(&engine));
@@ -41,7 +41,7 @@ int main()
 
         std::clog.rdbuf(old);
     }
-    catch(char const* error)
+    catch(char const *error)
     {
         std::cerr << "UNCAUGHT EXCEPTION: " << error << std::endl;
     }

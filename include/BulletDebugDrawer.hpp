@@ -32,22 +32,22 @@ namespace TiltBall
     class BulletDebugDrawer : public btIDebugDraw
     {
     public:
-        explicit BulletDebugDrawer(Engine* p_engine);
+        explicit BulletDebugDrawer(Engine *p_engine);
 
         void drawLine(const btVector3 &p_from,
                       const btVector3 &p_to,
                       const btVector3 &p_color);
 
-        void drawContactPoint(const btVector3& p_pointOnB,
-                              const btVector3& p_normalOnB,
+        void drawContactPoint(const btVector3 &p_pointOnB,
+                              const btVector3 &p_normalOnB,
                               btScalar p_distance,
                               int p_lifeTime,
-                              const btVector3& p_color);
+                              const btVector3 &p_color);
 
-        void reportErrorWarning(const char* p_warningString);
+        void reportErrorWarning(const char *p_warningString);
 
-        void draw3dText(const btVector3& p_location,
-                        const char* p_textString);
+        void draw3dText(const btVector3 &p_location,
+                        const char *p_textString);
 
         void setDebugMode(int p_debugMode);
 
@@ -56,8 +56,8 @@ namespace TiltBall
         void clear();
 
     private:
-        Engine* m_engine;
-        Ogre::Material* m_material;
+        Engine *m_engine;
+        Ogre::Material *m_material;
         std::vector<Ogre::SceneNode*> m_lines;
     };
 }

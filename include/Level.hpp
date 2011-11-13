@@ -34,34 +34,34 @@ namespace TiltBall
     class Level
     {
     public:
-        explicit Level(Engine* p_engine, std::string p_nodeName);
+        explicit Level(Engine *p_engine, std::string p_nodeName);
 
-        Level(const Level& p_other) = delete;
+        Level(const Level &p_other) = delete;
 
-        Level& operator=(const Level& p_other) = delete;
+        Level &operator=(const Level &p_other) = delete;
 
         ~Level();
 
-        btRigidBody* getLevelBody();
+        btRigidBody *getLevelBody();
 
-        btRigidBody* getBallBody();
+        btRigidBody *getBallBody();
 
-        Ogre::SceneNode* getLevelNode();
+        Ogre::SceneNode *getLevelNode();
 
-        Ogre::SceneNode* getBallNode();
+        Ogre::SceneNode *getBallNode();
 
     protected:
-        Ogre::SceneNode* m_level;
-        Ogre::SceneNode* m_ball;
+        Ogre::SceneNode *m_level;
+        Ogre::SceneNode *m_ball;
 
     private:
-        Ogre::SceneNode* createSceneNode(Engine* p_engine,
+        Ogre::SceneNode *createSceneNode(Engine *p_engine,
                                          std::string p_nodeName);
 
         void load(std::string p_levelFileName);
 
-        bool getNonEmptyLine(std::ifstream& p_file,
-                             std::istringstream& p_lineStream);
+        bool getNonEmptyLine(std::ifstream &p_file,
+                             std::istringstream &p_lineStream);
 
         WorldObject buildBox(std::string p_name,
                              std::string p_material,
@@ -92,7 +92,7 @@ namespace TiltBall
 
         void constructBall();
 
-        Engine* m_engine;
+        Engine *m_engine;
         std::string m_name;
         std::vector<WallCoordinates> m_walls;
 
@@ -112,8 +112,8 @@ namespace TiltBall
         float m_cameraZ;
 
         std::vector<btCollisionShape*> m_collisionShapes;
-        btRigidBody* m_levelBody;
-        btRigidBody* m_ballBody;
+        btRigidBody *m_levelBody;
+        btRigidBody *m_ballBody;
     };
 }
 

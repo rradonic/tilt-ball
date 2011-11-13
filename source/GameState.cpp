@@ -22,7 +22,7 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace TiltBall
 {
-    GameState::GameState(Engine* p_engine) :
+    GameState::GameState(Engine *p_engine) :
         m_engine(p_engine)
     {
     }

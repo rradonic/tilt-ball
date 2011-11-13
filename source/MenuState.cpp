@@ -22,14 +22,14 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace TiltBall
 {
-    MenuState::MenuState(Engine* p_engine) :
+    MenuState::MenuState(Engine *p_engine) :
         GameState(p_engine)
     {
         std::clog << "Entering menu state..." << std::endl;
 
-        CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton();
+        CEGUI::WindowManager &windowManager = CEGUI::WindowManager::getSingleton();
 
-        CEGUI::Window* layout = windowManager.loadWindowLayout("main-menu.layout");
+        CEGUI::Window *layout = windowManager.loadWindowLayout("main-menu.layout");
         CEGUI::System::getSingleton().setGUISheet(layout);
         unsigned int width, height, colorDepth;
         m_engine->getOgreRoot()->getRenderTarget("main_window")->getMetrics(width,
@@ -39,12 +39,12 @@ namespace TiltBall
         // CEGUI::System::getSingleton().injectMousePosition(width / 2, height / 2);
         // CEGUI::System::getSingleton().injectMouseMove(1, 1);
 
-        CEGUI::PushButton* resumeButton =
+        CEGUI::PushButton *resumeButton =
             (CEGUI::PushButton*)windowManager.getWindow("Menu/Resume");
         resumeButton->subscribeEvent(CEGUI::PushButton::EventClicked,
                                      CEGUI::SubscriberSlot(&MenuState::onResumeButtonClicked, this));
 
-        CEGUI::PushButton* quitButton = (CEGUI::PushButton*)windowManager.getWindow("Menu/Quit");
+        CEGUI::PushButton *quitButton = (CEGUI::PushButton*)windowManager.getWindow("Menu/Quit");
         quitButton->subscribeEvent(CEGUI::PushButton::EventClicked,
                                    CEGUI::SubscriberSlot(&MenuState::onQuitButtonClicked, this));
     }
@@ -66,9 +66,9 @@ namespace TiltBall
     {
     }
 
-    bool MenuState::update(const Ogre::FrameEvent& p_event)
+    bool MenuState::update(const Ogre::FrameEvent &p_event)
     {
-        InputSystem* inputSystem = m_engine->getInputSystem();
+        InputSystem *inputSystem = m_engine->getInputSystem();
         inputSystem->capture();
 
         return true;
@@ -129,14 +129,14 @@ namespace TiltBall
         }
     }
 
-    bool MenuState::onResumeButtonClicked(const CEGUI::EventArgs& e)
+    bool MenuState::onResumeButtonClicked(const CEGUI::EventArgs &e)
     {
         std::clog << "Resume clicked!" << std::endl;
         m_engine->requestPop();
         return true;
     }
 
-    bool MenuState::onQuitButtonClicked(const CEGUI::EventArgs& e)
+    bool MenuState::onQuitButtonClicked(const CEGUI::EventArgs &e)
     {
         std::clog << "Quit clicked!" << std::endl;
         m_engine->requestQuit();

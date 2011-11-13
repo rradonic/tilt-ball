@@ -29,11 +29,11 @@ namespace TiltBall
     class MenuState: public GameState
     {
     public:
-        explicit MenuState(Engine* p_engine);
+        explicit MenuState(Engine *p_engine);
 
-        MenuState(const MenuState& p_other) = delete;
+        MenuState(const MenuState &p_other) = delete;
 
-        MenuState& operator=(const MenuState& p_other) = delete;
+        MenuState &operator=(const MenuState &p_other) = delete;
 
         ~MenuState();
 
@@ -41,7 +41,7 @@ namespace TiltBall
 
         void resume();
 
-        bool update(const Ogre::FrameEvent& p_event);
+        bool update(const Ogre::FrameEvent &p_event);
 
         bool mouseMoved(const OIS::MouseEvent &p_evt);
 
@@ -57,9 +57,9 @@ namespace TiltBall
     private:
         CEGUI::MouseButton convertMouseButton(OIS::MouseButtonID p_buttonId);
 
-        bool onResumeButtonClicked(const CEGUI::EventArgs& e);
+        bool onResumeButtonClicked(const CEGUI::EventArgs &e);
 
-        bool onQuitButtonClicked(const CEGUI::EventArgs& e);
+        bool onQuitButtonClicked(const CEGUI::EventArgs &e);
 
         bool m_quit;
     };

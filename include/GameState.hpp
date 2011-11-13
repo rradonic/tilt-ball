@@ -33,7 +33,7 @@ namespace TiltBall
         public OIS::KeyListener
     {
     public:
-        explicit GameState(Engine* p_engine);
+        explicit GameState(Engine *p_engine);
 
         virtual ~GameState() = 0;
 
@@ -41,10 +41,10 @@ namespace TiltBall
 
         virtual void resume() = 0;
 
-        virtual bool update(const Ogre::FrameEvent& p_event) = 0;
+        virtual bool update(const Ogre::FrameEvent &p_event) = 0;
 
     protected:
-        Engine* m_engine;
+        Engine *m_engine;
     };
 }
 
