@@ -30,7 +30,7 @@
 
 namespace TiltBall
 {
-    Level::Level(Engine* p_engine, std::string p_levelFileName) :
+    Level::Level(Engine *p_engine, std::string p_levelFileName) :
         m_level(createSceneNode(p_engine, "level")),
         m_ball(createSceneNode(p_engine, "ball")),
         m_engine(p_engine),
@@ -41,7 +41,7 @@ namespace TiltBall
         load(p_levelFileName);
 
         std::clog << "Setting up camera..." << std::endl;
-        Ogre::Camera* camera = m_engine->getOgreRoot()->getSceneManager("main_scene_manager")->
+        Ogre::Camera *camera = m_engine->getOgreRoot()->getSceneManager("main_scene_manager")->
             createCamera("main_camera");
 
         camera->setNearClipDistance(1.0f);
@@ -52,7 +52,7 @@ namespace TiltBall
         camera->lookAt(0, 0, 0);
 
         std::clog << "Setting up viewport..." << std::endl;
-        Ogre::Viewport* viewport = m_engine->getOgreRoot()->getRenderTarget("main_window")->
+        Ogre::Viewport *viewport = m_engine->getOgreRoot()->getRenderTarget("main_window")->
             addViewport(camera, 0);
 
         viewport->setBackgroundColour(Ogre::ColourValue(0, 0, 0));
@@ -64,7 +64,7 @@ namespace TiltBall
     void Level::constructLevel()
     {
         // bottom surface and walls all go into a compound shape
-        btCompoundShape* compoundShape = new btCompoundShape();
+        btCompoundShape *compoundShape = new btCompoundShape();
 
         // build bottom surface
         std::clog << "Creating bottom surface..." << std::endl;
@@ -109,7 +109,7 @@ namespace TiltBall
         btScalar levelMass(0.f);
         btVector3 levelLocalInertia(0, 0, 0);
 
-        OgreMotionState* levelMotionState = new OgreMotionState(levelTransform, m_level);
+        OgreMotionState *levelMotionState = new OgreMotionState(levelTransform, m_level);
 
         btRigidBody::btRigidBodyConstructionInfo levelInfo(levelMass,
                                                            levelMotionState,
@@ -123,7 +123,7 @@ namespace TiltBall
         m_engine->getDynamicsWorld()->addRigidBody(m_levelBody);
 
         // add level to graphics world
-        Ogre::SceneManager* sceneManager = m_engine->getOgreRoot()->
+        Ogre::SceneManager *sceneManager = m_engine->getOgreRoot()->
             getSceneManager("main_scene_manager");
         sceneManager->getRootSceneNode()->addChild(m_level);
     }
@@ -131,7 +131,7 @@ namespace TiltBall
     void Level::constructBall()
     {
         std::clog << "Creating ball..." << std::endl;
-        Ogre::Entity* ball = m_engine->getOgreRoot()->getSceneManager("main_scene_manager")->
+        Ogre::Entity *ball = m_engine->getOgreRoot()->getSceneManager("main_scene_manager")->
             createEntity("ball", "meshes/sphere.mesh");
         ball->setMaterialName("Materials/Ball");
 
@@ -139,18 +139,18 @@ namespace TiltBall
         m_ball->attachObject(ball);
 
         // add ball to physics world
-        btCollisionShape* sphereShape = new btSphereShape(btScalar(1.0f));
+        btCollisionShape *sphereShape = new btSphereShape(btScalar(1.0f));
         m_collisionShapes.push_back(sphereShape);
 
         btTransform sphereTransform;
         sphereTransform.setIdentity();
         sphereTransform.setOrigin(btVector3(-2, 2, -2));
 
-        btScalar sphereMass(10.f);
+        btScalar sphereMass(50.f);
         btVector3 sphereLocalInertia(0, 0, 0);
         sphereShape->calculateLocalInertia(sphereMass, sphereLocalInertia);
 
-        OgreMotionState* sphereMotionState = new OgreMotionState(sphereTransform, m_ball);
+        OgreMotionState *sphereMotionState = new OgreMotionState(sphereTransform, m_ball);
 
         btRigidBody::btRigidBodyConstructionInfo sphereInfo(sphereMass,
                                                             sphereMotionState,
@@ -161,7 +161,7 @@ namespace TiltBall
         m_engine->getDynamicsWorld()->addRigidBody(m_ballBody);
 
         // add ball to graphics world
-        Ogre::SceneManager* sceneManager = m_engine->getOgreRoot()->
+        Ogre::SceneManager *sceneManager = m_engine->getOgreRoot()->
             getSceneManager("main_scene_manager");
         sceneManager->getRootSceneNode()->addChild(m_ball);
     }
@@ -172,11 +172,11 @@ namespace TiltBall
 
         //remove the rigidbodies from the dynamics world and delete them
         int i;
-        btDiscreteDynamicsWorld* dynamicsWorld = m_engine->getDynamicsWorld();
+        btDiscreteDynamicsWorld *dynamicsWorld = m_engine->getDynamicsWorld();
         for(i = dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
         {
-            btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[i];
-            btRigidBody* body = btRigidBody::upcast(obj);
+            btCollisionObject *obj = dynamicsWorld->getCollisionObjectArray()[i];
+            btRigidBody *body = btRigidBody::upcast(obj);
             if (body && body->getMotionState())
             {
                 delete body->getMotionState();
@@ -188,12 +188,12 @@ namespace TiltBall
         //delete collision shapes
         for(std::vector<btCollisionShape*>::size_type j = 0; j < m_collisionShapes.size(); j++)
         {
-            btCollisionShape* shape = m_collisionShapes[j];
+            btCollisionShape *shape = m_collisionShapes[j];
             delete shape;
         }
     }
 
-    Ogre::SceneNode* Level::createSceneNode(Engine* p_engine, std::string p_nodeName)
+    Ogre::SceneNode *Level::createSceneNode(Engine *p_engine, std::string p_nodeName)
     {
         return p_engine->getOgreRoot()->getSceneManager("main_scene_manager")->
             createSceneNode(p_nodeName);
@@ -252,7 +252,7 @@ namespace TiltBall
                                 float p_y2,
                                 float p_z2)
     {
-        Ogre::ManualObject* manual = m_engine->getOgreRoot()->
+        Ogre::ManualObject *manual = m_engine->getOgreRoot()->
             getSceneManager("main_scene_manager")->createManualObject(p_name);
         manual->begin(p_material);
 
@@ -318,7 +318,7 @@ namespace TiltBall
         manual->end();
 
         // add box to the physics world
-        btCollisionShape* boxShape = new btBoxShape(btVector3(((p_x2 - p_x1) / 2),
+        btCollisionShape *boxShape = new btBoxShape(btVector3(((p_x2 - p_x1) / 2),
                                                               ((p_y2 - p_y1) / 2),
                                                               ((p_z2 - p_z1) / 2)));
 
@@ -392,7 +392,7 @@ namespace TiltBall
         }
     }
 
-    bool Level::getNonEmptyLine(std::ifstream& p_file, std::istringstream& p_lineStream)
+    bool Level::getNonEmptyLine(std::ifstream &p_file, std::istringstream &p_lineStream)
     {
         std::string line;
         // skip blank lines
@@ -409,22 +409,22 @@ namespace TiltBall
         return true;
     }
 
-    btRigidBody* Level::getLevelBody()
+    btRigidBody *Level::getLevelBody()
     {
         return m_levelBody;
     }
 
-    btRigidBody* Level::getBallBody()
+    btRigidBody *Level::getBallBody()
     {
         return m_ballBody;
     }
 
-    Ogre::SceneNode* Level::getLevelNode()
+    Ogre::SceneNode *Level::getLevelNode()
     {
         return m_level;
     }
 
-    Ogre::SceneNode* Level::getBallNode()
+    Ogre::SceneNode *Level::getBallNode()
     {
         return m_ball;
     }

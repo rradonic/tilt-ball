@@ -22,8 +22,8 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace TiltBall
 {
-    WorldObject::WorldObject(Ogre::MovableObject* p_movableObject,
-                             btCollisionShape* p_collisionShape,
+    WorldObject::WorldObject(Ogre::MovableObject *p_movableObject,
+                             btCollisionShape *p_collisionShape,
                              btTransform p_transform)
     {
         m_movableObject = p_movableObject;
@@ -31,12 +31,12 @@ namespace TiltBall
         m_transform = p_transform;
     }
 
-    Ogre::MovableObject* WorldObject::getMovableObject()
+    Ogre::MovableObject *WorldObject::getMovableObject()
     {
         return m_movableObject;
     }
 
-    btCollisionShape* WorldObject::getCollisionShape()
+    btCollisionShape *WorldObject::getCollisionShape()
     {
         return m_collisionShape;
     }

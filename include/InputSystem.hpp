@@ -29,30 +29,30 @@ namespace TiltBall
     class InputSystem
     {
     public:
-        explicit InputSystem(Ogre::Root* p_root);
+        explicit InputSystem(Ogre::Root *p_root);
 
-        InputSystem(const InputSystem& p_other) = delete;
+        InputSystem(const InputSystem &p_other) = delete;
 
-        InputSystem& operator=(const InputSystem& p_other) = delete;
+        InputSystem &operator=(const InputSystem &p_other) = delete;
 
         ~InputSystem();
 
         void capture();
 
-        const OIS::MouseState& getMouseState();
+        const OIS::MouseState &getMouseState();
 
         bool isKeyDown(OIS::KeyCode p_key);
 
-        OIS::Keyboard* getKeyboard();
+        OIS::Keyboard *getKeyboard();
 
-        OIS::Mouse* getMouse();
+        OIS::Mouse *getMouse();
 
     private:
-        OIS::InputManager* createInputSystem(Ogre::Root* p_root);
+        OIS::InputManager *createInputSystem(Ogre::Root *p_root);
 
-        OIS::InputManager* m_inputManager;
-        OIS::Keyboard* m_keyboard;
-        OIS::Mouse* m_mouse;
+        OIS::InputManager *m_inputManager;
+        OIS::Keyboard *m_keyboard;
+        OIS::Mouse *m_mouse;
 
         bool m_inputSystemDestroyed;
     };

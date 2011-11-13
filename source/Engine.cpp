@@ -43,7 +43,7 @@ namespace TiltBall
         m_requestPop(false)
     {
         std::clog << "Setting up resource manager..." << std::endl;
-        Ogre::ResourceGroupManager* resourceGroupManager =
+        Ogre::ResourceGroupManager *resourceGroupManager =
             Ogre::ResourceGroupManager::getSingletonPtr();
 
         resourceGroupManager->addResourceLocation("../resources", "FileSystem", "General", true);
@@ -80,7 +80,7 @@ namespace TiltBall
         CEGUI::SchemeManager::getSingleton().create("TaharezLook.scheme");
         CEGUI::System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
 
-        m_dynamicsWorld->setGravity(btVector3(0,-50,0));
+        m_dynamicsWorld->setGravity(btVector3(0, -250, 0));
 
         resourceGroupManager->createResourceGroup("Debugging");
 
@@ -88,17 +88,17 @@ namespace TiltBall
         m_dynamicsWorld->setDebugDrawer(m_debugDrawer);
     }
 
-    Ogre::Root* Engine::createOgreRoot()
+    Ogre::Root *Engine::createOgreRoot()
     {
         std::clog << "Initializing Ogre..." << std::endl;
-        Ogre::Root* ogreRoot = new Ogre::Root("", "");
+        Ogre::Root *ogreRoot = new Ogre::Root("", "");
 
         std::clog << "Acquiring rendering system..." << std::endl;
         ogreRoot->loadPlugin("/usr/lib/OGRE/RenderSystem_GL.so");
         Ogre::String name("OpenGL Rendering Subsystem");
         Ogre::RenderSystemList list = ogreRoot->getAvailableRenderers();
         Ogre::RenderSystemList::iterator iter = list.begin();
-        Ogre::RenderSystem* renderSystem;
+        Ogre::RenderSystem *renderSystem;
 
         while (iter != list.end())
         {
@@ -148,7 +148,7 @@ namespace TiltBall
         delete m_ogreRoot;
     }
 
-    void Engine::pushState(GameState* p_state)
+    void Engine::pushState(GameState *p_state)
     {
         m_inputSystem->getKeyboard()->setEventCallback(0);
         m_inputSystem->getMouse()->setEventCallback(0);
@@ -164,7 +164,7 @@ namespace TiltBall
         m_inputSystem->getKeyboard()->setEventCallback(0);
         m_inputSystem->getMouse()->setEventCallback(0);
 
-        GameState* oldState = m_states.back();
+        GameState *oldState = m_states.back();
         m_states.pop_back();
 
         m_inputSystem->getKeyboard()->setEventCallback(m_states.back());
@@ -204,22 +204,22 @@ namespace TiltBall
         }
     }
 
-    Ogre::Root* Engine::getOgreRoot()
+    Ogre::Root *Engine::getOgreRoot()
     {
         return m_ogreRoot;
     }
 
-    BulletDebugDrawer* Engine::getDebugDrawer()
+    BulletDebugDrawer *Engine::getDebugDrawer()
     {
         return m_debugDrawer;
     }
 
-    btDiscreteDynamicsWorld* Engine::getDynamicsWorld()
+    btDiscreteDynamicsWorld *Engine::getDynamicsWorld()
     {
         return m_dynamicsWorld;
     }
 
-    bool Engine::frameStarted(const Ogre::FrameEvent& p_event)
+    bool Engine::frameStarted(const Ogre::FrameEvent &p_event)
     {
         m_timeSinceLastFrame += p_event.timeSinceLastFrame;
         if (m_timeSinceLastFrame < INPUT_UPDATE_INTERVAL)
@@ -232,7 +232,7 @@ namespace TiltBall
         return ret;
     }
 
-    InputSystem* Engine::getInputSystem()
+    InputSystem *Engine::getInputSystem()
     {
         return m_inputSystem;
     }

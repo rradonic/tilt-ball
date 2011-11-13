@@ -22,7 +22,7 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace TiltBall
 {
-    InputSystem::InputSystem(Ogre::Root* p_ogreRoot) :
+    InputSystem::InputSystem(Ogre::Root *p_ogreRoot) :
         m_inputManager(createInputSystem(p_ogreRoot)),
         m_keyboard(dynamic_cast<OIS::Keyboard*>(m_inputManager->
                                                 createInputObject(OIS::OISKeyboard, true))),
@@ -44,7 +44,7 @@ namespace TiltBall
         OIS::InputManager::destroyInputSystem(m_inputManager);
     }
 
-    OIS::InputManager* InputSystem::createInputSystem(Ogre::Root* p_root)
+    OIS::InputManager *InputSystem::createInputSystem(Ogre::Root *p_root)
     {
         std::clog << "Initializing input system..." << std::endl;
         OIS::ParamList paramList;
@@ -62,7 +62,7 @@ namespace TiltBall
         return m_keyboard->isKeyDown(p_key);
     }
 
-    const OIS::MouseState& InputSystem::getMouseState()
+    const OIS::MouseState &InputSystem::getMouseState()
     {
         return m_mouse->getMouseState();
     }
@@ -73,12 +73,12 @@ namespace TiltBall
         m_mouse->capture();
     }
 
-    OIS::Keyboard* InputSystem::getKeyboard()
+    OIS::Keyboard *InputSystem::getKeyboard()
     {
         return m_keyboard;
     }
 
-    OIS::Mouse* InputSystem::getMouse()
+    OIS::Mouse *InputSystem::getMouse()
     {
         return m_mouse;
     }

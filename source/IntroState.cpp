@@ -22,7 +22,7 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace TiltBall
 {
-    IntroState::IntroState(Engine* p_engine) :
+    IntroState::IntroState(Engine *p_engine) :
         GameState(p_engine),
         m_totalMilliseconds(std::time_t(2000)),
         m_elapsedMilliseconds(0)
@@ -30,15 +30,15 @@ namespace TiltBall
         std::clog << "Entering intro state..." << std::endl;
 
         // do one input state capture just to hide the mouse cursor
-        InputSystem* inputSystem = m_engine->getInputSystem();
+        InputSystem *inputSystem = m_engine->getInputSystem();
         inputSystem->capture();
 
         // get the material by name
         std::clog << "Loading fade overlay material..." << std::endl;
         Ogre::ResourcePtr resptr = Ogre::MaterialManager::getSingleton().
             getByName("Materials/FadeOverlay");
-        Ogre::Material* material = dynamic_cast<Ogre::Material*>(resptr.getPointer());
-        Ogre::Technique* tech = material->getTechnique(0);
+        Ogre::Material *material = dynamic_cast<Ogre::Material*>(resptr.getPointer());
+        Ogre::Technique *tech = material->getTechnique(0);
         Ogre::Pass *pass = tech->getPass(0);
 
         m_textureUnitState = pass->getTextureUnitState(0);
@@ -59,7 +59,7 @@ namespace TiltBall
     {
     }
 
-    bool IntroState::update(const Ogre::FrameEvent& p_event)
+    bool IntroState::update(const Ogre::FrameEvent &p_event)
     {
         m_elapsedMilliseconds = m_timer.getMilliseconds();
 
