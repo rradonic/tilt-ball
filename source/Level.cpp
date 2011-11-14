@@ -77,12 +77,13 @@ namespace TiltBall
                                                        m_levelZMax);
 
         m_level->attachObject(bottomSurface.getMovableObject());
-        compoundShape->addChildShape(bottomSurface.getTransform(), bottomSurface.getCollisionShape());
+        compoundShape->addChildShape(bottomSurface.getTransform(),
+                                     bottomSurface.getCollisionShape());
 
         std::clog << "Creating walls..." << std::endl;
         std::vector<WallCoordinates>::iterator iter;
         int wallNumber;
-        for (iter = m_walls.begin(), wallNumber = 0; iter < m_walls.end(); iter++, wallNumber++)
+        for(iter = m_walls.begin(), wallNumber = 0; iter < m_walls.end(); iter++, wallNumber++)
         {
             std::ostringstream wallNameStream;
             wallNameStream << "wall" << wallNumber;
@@ -359,14 +360,18 @@ namespace TiltBall
         m_levelYMin = -0.1;
         m_levelYMax = 0.1;
 
-        std::clog << "Level dimensions:" << std::endl;
-        std::clog << levelXSpan << std::endl;
-        std::clog << levelZSpan << std::endl;
+        std::clog << "Level dimensions:" << levelXSpan << 'x' << levelZSpan << std::endl;
 
         getNonEmptyLine(file, lineStream);
         std::getline(lineStream, throwAway, '('); lineStream >> m_cameraX;
         std::getline(lineStream, throwAway, ','); lineStream >> m_cameraY;
         std::getline(lineStream, throwAway, ','); lineStream >> m_cameraZ;
+
+        getNonEmptyLine(file, lineStream);
+        std::getline(lineStream, throwAway, '('); lineStream >> m_holeX;
+        std::getline(lineStream, throwAway, ','); lineStream >> m_holeZ;
+
+        std::clog << "Hole coordinates: " << m_holeX << ' ' << m_holeZ << std::endl;
 
         std::clog << "Loading walls..." << std::endl;
         // the rest of the file defines the walls
