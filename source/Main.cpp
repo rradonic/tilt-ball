@@ -35,6 +35,7 @@ int main()
 
         TiltBall::Engine engine;
         engine.pushState(new TiltBall::RunningState(&engine));
+        engine.pushState(new TiltBall::MenuState(&engine));
         engine.pushState(new TiltBall::IntroState(&engine));
         engine.mainLoop();
 

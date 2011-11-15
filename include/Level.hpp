@@ -86,7 +86,7 @@ namespace TiltBall
         std::vector<WallCoordinates> m_walls;
 
         static constexpr float WALL_HEIGHT = 2.0;
-        static constexpr float WALL_HALF_THICKNESS = 0.85;
+        static constexpr float WALL_HALF_THICKNESS = 0.6;
         static constexpr float HOLE_HALF_SIZE = 1.3;
 
         // level dimensions in world coordinates

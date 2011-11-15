@@ -37,9 +37,9 @@ namespace TiltBall
         sceneManager->setAmbientLight(Ogre::ColourValue(0.8, 0.8, 0.8));
         Ogre::Light *light = sceneManager->createLight("main_light");
         light->setType(Ogre::Light::LT_POINT);
-        light->setPosition(0, 10, 0);
-        light->setDiffuseColour(Ogre::ColourValue(0.5, 0.5, 0.5));
-        light->setSpecularColour(Ogre::ColourValue(0.3, 0.3, 0.3));
+        light->setPosition(0, 20, 0);
+        light->setDiffuseColour(Ogre::ColourValue(0.1, 0.1, 0.1));
+        light->setSpecularColour(Ogre::ColourValue(0.1, 0.1, 0.1));
     }
 
     RunningState::~RunningState()
@@ -64,9 +64,7 @@ namespace TiltBall
 
         m_engine->getDebugDrawer()->clear();
         if(inputSystem->isKeyDown(OIS::KC_F1))
-        {
             m_engine->getDynamicsWorld()->debugDrawWorld();
-        }
 
         Ogre::SceneNode *levelNode = m_currentLevel->getLevelNode();
 
@@ -76,7 +74,8 @@ namespace TiltBall
         levelNode->pitch(Ogre::Degree((float)mouseState.Y.rel / 7), Ogre::Node::TS_WORLD);
 
         btRigidBody *levelBody = m_currentLevel->getLevelBody();
-        OgreMotionState *levelMotionState = dynamic_cast<OgreMotionState*>(levelBody->getMotionState());
+        OgreMotionState *levelMotionState =
+            dynamic_cast<OgreMotionState*>(levelBody->getMotionState());
         btTransform newPhysicsPosition = btTransform(btQuaternion(levelNode->getOrientation().x,
                                                                   levelNode->getOrientation().y,
                                                                   levelNode->getOrientation().z,
