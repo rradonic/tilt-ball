@@ -33,10 +33,7 @@ namespace TiltBall
     Level::Level(Engine *p_engine, std::string p_levelFileName) :
         m_level(createSceneNode(p_engine, "level")),
         m_ball(createSceneNode(p_engine, "ball")),
-        m_engine(p_engine),
-
-        m_wallHeight(2.0),
-        m_wallHalfThickness(0.85)
+        m_engine(p_engine)
     {
         load(p_levelFileName);
 
@@ -57,47 +54,34 @@ namespace TiltBall
 
         viewport->setBackgroundColour(Ogre::ColourValue(0, 0, 0));
 
-        constructLevel();
-        constructBall();
+        buildLevel();
+        buildBall();
     }
 
-    void Level::constructLevel()
+    void Level::buildLevel()
     {
         // bottom surface and walls all go into a compound shape
         btCompoundShape *compoundShape = new btCompoundShape();
 
-        // build bottom surface
-        std::clog << "Creating bottom surface..." << std::endl;
-        WorldObject bottomSurface = buildBottomSurface("bottom_surface", "Materials/Level1Floor",
-                                                       m_levelXMin,
-                                                       m_levelYMin,
-                                                       m_levelZMin,
-                                                       m_levelXMax,
-                                                       m_levelYMax,
-                                                       m_levelZMax);
-
-        m_level->attachObject(bottomSurface.getMovableObject());
-        compoundShape->addChildShape(bottomSurface.getTransform(),
-                                     bottomSurface.getCollisionShape());
-
-        std::clog << "Creating walls..." << std::endl;
-        std::vector<WallCoordinates>::iterator iter;
-        int wallNumber;
-        for(iter = m_walls.begin(), wallNumber = 0; iter < m_walls.end(); iter++, wallNumber++)
+        std::vector<WorldObject> bottomSurface = buildBottomSurface("Materials/Level1Floor",
+                                                                    "Materials/Hole");
+        for(std::vector<WorldObject>::iterator it = bottomSurface.begin();
+            it < bottomSurface.end();
+            it++)
         {
-            std::ostringstream wallNameStream;
-            wallNameStream << "wall" << wallNumber;
+            m_level->attachObject((*it).getMovableObject());
+            compoundShape->addChildShape((*it).getTransform(),
+                                         (*it).getCollisionShape());
+        }
 
-            // build walls
-            WorldObject wall = buildWall(wallNameStream.str(),
-                                         "Materials/Level1Wall",
-                                         (*iter).getBeginX(),
-                                         (*iter).getBeginZ(),
-                                         (*iter).getEndX(),
-                                         (*iter).getEndZ());
-
-            m_level->attachObject(wall.getMovableObject());
-            compoundShape->addChildShape(wall.getTransform(), wall.getCollisionShape());
+        std::vector<WorldObject> walls = buildWalls("Materials/Level1Wall");
+        for(std::vector<WorldObject>::iterator it = walls.begin();
+            it < walls.end();
+            it++)
+        {
+            m_level->attachObject((*it).getMovableObject());
+            compoundShape->addChildShape((*it).getTransform(),
+                                         (*it).getCollisionShape());
         }
 
         // add level to physics world
@@ -129,7 +113,7 @@ namespace TiltBall
         sceneManager->getRootSceneNode()->addChild(m_level);
     }
 
-    void Level::constructBall()
+    void Level::buildBall()
     {
         std::clog << "Creating ball..." << std::endl;
         Ogre::Entity *ball = m_engine->getOgreRoot()->getSceneManager("main_scene_manager")->
@@ -178,15 +162,15 @@ namespace TiltBall
         {
             btCollisionObject *obj = dynamicsWorld->getCollisionObjectArray()[i];
             btRigidBody *body = btRigidBody::upcast(obj);
+
             if (body && body->getMotionState())
-            {
                 delete body->getMotionState();
-            }
+
             dynamicsWorld->removeCollisionObject(obj);
             delete obj;
         }
 
-        //delete collision shapes
+        // delete collision shapes
         for(std::vector<btCollisionShape*>::size_type j = 0; j < m_collisionShapes.size(); j++)
         {
             btCollisionShape *shape = m_collisionShapes[j];
@@ -200,48 +184,101 @@ namespace TiltBall
             createSceneNode(p_nodeName);
     }
 
-    WorldObject Level::buildBottomSurface(std::string p_name,
-                                          std::string p_material,
-                                          float p_x1,
-                                          float p_y1,
-                                          float p_z1,
-                                          float p_x2,
-                                          float p_y2,
-                                          float p_z2)
+    std::vector<WorldObject> Level::buildBottomSurface(std::string p_bottomMaterial,
+                                                       std::string p_holeMaterial)
     {
-        return buildBox(p_name, p_material,
-                        p_x1 - m_wallHalfThickness,
-                        p_y1,
-                        p_z1 - m_wallHalfThickness,
-                        p_x2 + m_wallHalfThickness,
-                        p_y2,
-                        p_z2 + m_wallHalfThickness);
+        std::clog << "Creating bottom surface..." << std::endl;
+
+        std::vector<WorldObject> bottomSurface;
+
+        bottomSurface.push_back(buildBox("bottom_surface_1", p_bottomMaterial,
+                                         m_levelXMin - Level::WALL_HALF_THICKNESS,
+                                         m_levelYMin,
+                                         m_levelZMin - Level::WALL_HALF_THICKNESS,
+                                         m_levelXMax + Level::WALL_HALF_THICKNESS,
+                                         m_levelYMax,
+                                         m_levelZMin + m_holeZ - Level::HOLE_HALF_SIZE));
+
+        bottomSurface.push_back(buildBox("bottom_surface_2", p_bottomMaterial,
+                                         m_levelXMin + m_holeX + Level::HOLE_HALF_SIZE,
+                                         m_levelYMin,
+                                         m_levelZMin + m_holeZ - Level::HOLE_HALF_SIZE,
+                                         m_levelXMax + Level::WALL_HALF_THICKNESS,
+                                         m_levelYMax,
+                                         m_levelZMax + Level::WALL_HALF_THICKNESS));
+
+        bottomSurface.push_back(buildBox("bottom_surface_3", p_bottomMaterial,
+                                         m_levelXMin - Level::WALL_HALF_THICKNESS,
+                                         m_levelYMin,
+                                         m_levelZMin + m_holeZ + Level::HOLE_HALF_SIZE,
+                                         m_levelXMin + m_holeX + Level::HOLE_HALF_SIZE,
+                                         m_levelYMax,
+                                         m_levelZMax + Level::WALL_HALF_THICKNESS));
+
+        bottomSurface.push_back(buildBox("bottom_surface_4", p_bottomMaterial,
+                                         m_levelXMin - Level::WALL_HALF_THICKNESS,
+                                         m_levelYMin,
+                                         m_levelZMin + m_holeZ - Level::HOLE_HALF_SIZE,
+                                         m_levelXMin + m_holeX - Level::HOLE_HALF_SIZE,
+                                         m_levelYMax,
+                                         m_levelZMin + m_holeZ + Level::HOLE_HALF_SIZE));
+
+        bottomSurface.push_back(buildBox("bottom_surface_5", p_holeMaterial,
+                                         m_levelXMin + m_holeX - Level::HOLE_HALF_SIZE,
+                                         m_levelYMin,
+                                         m_levelZMin + m_holeZ - Level::HOLE_HALF_SIZE,
+                                         m_levelXMin + m_holeX + Level::HOLE_HALF_SIZE,
+                                         m_levelYMin + 0.01,
+                                         m_levelZMin + m_holeZ + Level::HOLE_HALF_SIZE));
+
+        return bottomSurface;
     }
 
-    WorldObject Level::buildWall(std::string p_name,
-                                 std::string p_material,
-                                 int p_pointBeginX,
-                                 int p_pointBeginZ,
-                                 int p_pointEndX,
-                                 int p_pointEndZ)
+    std::vector<WorldObject> Level::buildWalls(std::string p_material)
     {
-        static float extrusion = 0.001;
-        if (p_pointBeginX > p_pointEndX)
-            std::swap(p_pointBeginX, p_pointEndX);
-        if (p_pointBeginZ > p_pointEndZ)
-            std::swap(p_pointBeginZ, p_pointEndZ);
+        std::clog << "Creating walls..." << std::endl;
 
-        float wallX1 = m_levelXMin + p_pointBeginX - m_wallHalfThickness - extrusion;
-        float wallX2 = m_levelXMin + p_pointEndX + m_wallHalfThickness + extrusion;
-        float wallY1 = m_levelYMax - extrusion;
-        float wallY2 = m_levelYMax + m_wallHeight + extrusion;
-        float wallZ1 = m_levelZMin + p_pointBeginZ - m_wallHalfThickness - extrusion;
-        float wallZ2 = m_levelZMin + p_pointEndZ + m_wallHalfThickness + extrusion;
+        std::vector<WorldObject> walls;
 
-        // slight extrusion prevents depth fighting of overlapping wall ends
-        extrusion += 0.001;
+        std::vector<WallCoordinates>::iterator it;
+        int wallNumber;
+        for(it = m_walls.begin(), wallNumber = 0; it < m_walls.end(); it++, wallNumber++)
+        {
+            std::ostringstream wallNameStream;
+            wallNameStream << "wall" << wallNumber;
 
-        return buildBox(p_name, p_material, wallX1, wallY1, wallZ1, wallX2, wallY2, wallZ2);
+            int p_pointBeginX = (*it).getBeginX();
+            int p_pointBeginZ = (*it).getBeginZ();
+            int p_pointEndX = (*it).getEndX();
+            int p_pointEndZ = (*it).getEndZ();
+
+            static float extrusion = 0.001;
+            if (p_pointBeginX > p_pointEndX)
+                std::swap(p_pointBeginX, p_pointEndX);
+            if (p_pointBeginZ > p_pointEndZ)
+                std::swap(p_pointBeginZ, p_pointEndZ);
+
+            float wallX1 = m_levelXMin + p_pointBeginX - Level::WALL_HALF_THICKNESS - extrusion;
+            float wallX2 = m_levelXMin + p_pointEndX + Level::WALL_HALF_THICKNESS + extrusion;
+            float wallY1 = m_levelYMax - extrusion;
+            float wallY2 = m_levelYMax + Level::WALL_HEIGHT + extrusion;
+            float wallZ1 = m_levelZMin + p_pointBeginZ - Level::WALL_HALF_THICKNESS - extrusion;
+            float wallZ2 = m_levelZMin + p_pointEndZ + Level::WALL_HALF_THICKNESS + extrusion;
+
+            // slight extrusion prevents depth fighting of overlapping wall ends
+            extrusion += 0.001;
+
+            walls.push_back(buildBox(wallNameStream.str(),
+                                     p_material,
+                                     wallX1,
+                                     wallY1,
+                                     wallZ1,
+                                     wallX2,
+                                     wallY2,
+                                     wallZ2));
+        }
+
+        return walls;
     }
 
     WorldObject Level::buildBox(std::string p_name,
@@ -264,44 +301,111 @@ namespace TiltBall
         // bottom face
         uMax = (p_x2 - p_x1);
         vMax = (p_z2 - p_z1);
-        manual->position(p_x1, p_y1, p_z1); manual->textureCoord(0, vMax);
-        manual->position(p_x2, p_y1, p_z1); manual->textureCoord(uMax, vMax);
-        manual->position(p_x2, p_y1, p_z2); manual->textureCoord(uMax, 0);
-        manual->position(p_x1, p_y1, p_z2); manual->textureCoord(0, 0);
+        manual->position(p_x1, p_y1, p_z1);
+        manual->textureCoord(0, vMax);
+        manual->normal(0, -1, 0);
+
+        manual->position(p_x2, p_y1, p_z1);
+        manual->textureCoord(uMax, vMax);
+        manual->normal(0, -1, 0);
+
+        manual->position(p_x2, p_y1, p_z2);
+        manual->textureCoord(uMax, 0);
+        manual->normal(0, -1, 0);
+
+        manual->position(p_x1, p_y1, p_z2);
+        manual->textureCoord(0, 0);
+        manual->normal(0, -1, 0);
 
         // top face
-        manual->position(p_x1, p_y2, p_z2); manual->textureCoord(0, 0);
-        manual->position(p_x2, p_y2, p_z2); manual->textureCoord(uMax, 0);
-        manual->position(p_x2, p_y2, p_z1); manual->textureCoord(uMax, vMax);
-        manual->position(p_x1, p_y2, p_z1); manual->textureCoord(0, vMax);
+        manual->position(p_x1, p_y2, p_z2);
+        manual->textureCoord(0, 0);
+        manual->normal(0, 1, 0);
+
+        manual->position(p_x2, p_y2, p_z2);
+        manual->textureCoord(uMax, 0);
+        manual->normal(0, 1, 0);
+
+        manual->position(p_x2, p_y2, p_z1);
+        manual->textureCoord(uMax, vMax);
+        manual->normal(0, 1, 0);
+
+        manual->position(p_x1, p_y2, p_z1);
+        manual->textureCoord(0, vMax);
+        manual->normal(0, 1, 0);
 
         // front face
         uMax = (p_x2 - p_x1);
         vMax = (p_y2 - p_y1);
-        manual->position(p_x1, p_y1, p_z2); manual->textureCoord(0, 0);
-        manual->position(p_x2, p_y1, p_z2); manual->textureCoord(uMax, 0);
-        manual->position(p_x2, p_y2, p_z2); manual->textureCoord(uMax, vMax);
-        manual->position(p_x1, p_y2, p_z2); manual->textureCoord(0, vMax);
+
+        manual->position(p_x1, p_y1, p_z2);
+        manual->textureCoord(0, 0);
+        manual->normal(0, 0, 1);
+
+        manual->position(p_x2, p_y1, p_z2);
+        manual->textureCoord(uMax, 0);
+        manual->normal(0, 0, 1);
+
+        manual->position(p_x2, p_y2, p_z2);
+        manual->textureCoord(uMax, vMax);
+        manual->normal(0, 0, 1);
+
+        manual->position(p_x1, p_y2, p_z2);
+        manual->textureCoord(0, vMax);
+        manual->normal(0, 0, 1);
 
         // back face
-        manual->position(p_x1, p_y2, p_z1); manual->textureCoord(0, vMax);
-        manual->position(p_x2, p_y2, p_z1); manual->textureCoord(uMax, vMax);
-        manual->position(p_x2, p_y1, p_z1); manual->textureCoord(uMax, 0);
-        manual->position(p_x1, p_y1, p_z1); manual->textureCoord(0, 0);
+        manual->position(p_x1, p_y2, p_z1);
+        manual->textureCoord(0, vMax);
+        manual->normal(0, 0, -1);
+
+        manual->position(p_x2, p_y2, p_z1);
+        manual->textureCoord(uMax, vMax);
+        manual->normal(0, 0, -1);
+
+        manual->position(p_x2, p_y1, p_z1);
+        manual->textureCoord(uMax, 0);
+        manual->normal(0, 0, -1);
+
+        manual->position(p_x1, p_y1, p_z1);
+        manual->textureCoord(0, 0);
+        manual->normal(0, 0, -1);
 
         // left face
         uMax = (p_y2 - p_y1);
         vMax = (p_z2 - p_z1);
-        manual->position(p_x1, p_y1, p_z2); manual->textureCoord(0, 0);
-        manual->position(p_x1, p_y2, p_z2); manual->textureCoord(uMax, 0);
-        manual->position(p_x1, p_y2, p_z1); manual->textureCoord(uMax, vMax);
-        manual->position(p_x1, p_y1, p_z1); manual->textureCoord(0, vMax);
+        manual->position(p_x1, p_y1, p_z2);
+        manual->textureCoord(0, 0);
+        manual->normal(-1, 0, 0);
+
+        manual->position(p_x1, p_y2, p_z2);
+        manual->textureCoord(uMax, 0);
+        manual->normal(-1, 0, 0);
+
+        manual->position(p_x1, p_y2, p_z1);
+        manual->textureCoord(uMax, vMax);
+        manual->normal(-1, 0, 0);
+
+        manual->position(p_x1, p_y1, p_z1);
+        manual->textureCoord(0, vMax);
+        manual->normal(-1, 0, 0);
 
         // right face
-        manual->position(p_x2, p_y1, p_z1); manual->textureCoord(0, vMax);
-        manual->position(p_x2, p_y2, p_z1); manual->textureCoord(uMax, vMax);
-        manual->position(p_x2, p_y2, p_z2); manual->textureCoord(uMax, 0);
-        manual->position(p_x2, p_y1, p_z2); manual->textureCoord(0, 0);
+        manual->position(p_x2, p_y1, p_z1);
+        manual->textureCoord(0, vMax);
+        manual->normal(1, 0, 0);
+
+        manual->position(p_x2, p_y2, p_z1);
+        manual->textureCoord(uMax, vMax);
+        manual->normal(1, 0, 0);
+
+        manual->position(p_x2, p_y2, p_z2);
+        manual->textureCoord(uMax, 0);
+        manual->normal(1, 0, 0);
+
+        manual->position(p_x2, p_y1, p_z2);
+        manual->textureCoord(0, 0);
+        manual->normal(1, 0, 0);
 
         // bottom face
         manual->quad(0, 1, 2, 3);
@@ -357,8 +461,8 @@ namespace TiltBall
         m_levelXMax = levelXSpan / 2;
         m_levelZMin = -(levelZSpan / 2);
         m_levelZMax = levelZSpan / 2;
-        m_levelYMin = -0.1;
-        m_levelYMax = 0.1;
+        m_levelYMin = -1;
+        m_levelYMax = 1;
 
         std::clog << "Level dimensions:" << levelXSpan << 'x' << levelZSpan << std::endl;
 

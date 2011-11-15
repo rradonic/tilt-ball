@@ -72,32 +72,22 @@ namespace TiltBall
                              float p_y2,
                              float p_z2);
 
-        WorldObject buildBottomSurface(std::string p_name,
-                                       std::string p_material,
-                                       float p_x1,
-                                       float p_y1,
-                                       float p_z1,
-                                       float p_x2,
-                                       float p_y2,
-                                       float p_z2);
+        std::vector<WorldObject> buildBottomSurface(std::string p_bottomMaterial,
+                                                    std::string p_holeMaterial);
 
-        WorldObject buildWall(std::string p_name,
-                              std::string p_material,
-                              int p_pointBeginX,
-                              int p_pointBeginZ,
-                              int p_pointEndX,
-                              int p_pointEndZ);
+        std::vector<WorldObject> buildWalls(std::string p_material);
 
-        void constructLevel();
+        void buildLevel();
 
-        void constructBall();
+        void buildBall();
 
         Engine *m_engine;
         std::string m_name;
         std::vector<WallCoordinates> m_walls;
 
-        float m_wallHeight;
-        float m_wallHalfThickness;
+        static constexpr float WALL_HEIGHT = 2.0;
+        static constexpr float WALL_HALF_THICKNESS = 0.85;
+        static constexpr float HOLE_HALF_SIZE = 1.3;
 
         // level dimensions in world coordinates
         float m_levelYMin;
