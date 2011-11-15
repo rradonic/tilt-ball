@@ -36,8 +36,6 @@ namespace TiltBall
                                                                             height,
                                                                             colorDepth);
         CEGUI::MouseCursor::getSingleton().show();
-        // CEGUI::System::getSingleton().injectMousePosition(width / 2, height / 2);
-        // CEGUI::System::getSingleton().injectMouseMove(1, 1);
 
         CEGUI::PushButton *resumeButton =
             (CEGUI::PushButton*)windowManager.getWindow("Menu/Resume");
