@@ -74,12 +74,9 @@ namespace TiltBall
             Ogre::ManualObject *manualObject =
                 dynamic_cast<Ogre::ManualObject*>((*iter)->getAttachedObject(0));
 
-            std::clog <<
-                std::string("Destroying line object ") + manualObject->getName() << std::endl;
             (*iter)->detachObject(manualObject);
             sceneManager->destroyManualObject(manualObject);
 
-            std::clog << std::string("Destroying line node ") + (*iter)->getName() << std::endl;
             sceneManager->getRootSceneNode()->removeAndDestroyChild((*iter)->getName());
         }
 
