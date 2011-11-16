@@ -46,13 +46,18 @@ namespace TiltBall
 
         btRigidBody *getBallBody();
 
+        btRigidBody *getTargetBody();
+
         Ogre::SceneNode *getLevelNode();
 
         Ogre::SceneNode *getBallNode();
 
+        Ogre::SceneNode *getTargetNode();
+
     protected:
         Ogre::SceneNode *m_level;
         Ogre::SceneNode *m_ball;
+        Ogre::SceneNode *m_target;
 
     private:
         Ogre::SceneNode *createSceneNode(Engine *p_engine,
@@ -72,8 +77,7 @@ namespace TiltBall
                              float p_y2,
                              float p_z2);
 
-        std::vector<WorldObject> buildBottomSurface(std::string p_bottomMaterial,
-                                                    std::string p_holeMaterial);
+        std::vector<WorldObject> buildBottomSurface(std::string p_bottomMaterial);
 
         std::vector<WorldObject> buildWalls(std::string p_material);
 
@@ -87,7 +91,8 @@ namespace TiltBall
 
         static constexpr float WALL_HEIGHT = 2.0;
         static constexpr float WALL_HALF_THICKNESS = 0.6;
-        static constexpr float HOLE_HALF_SIZE = 1.3;
+        static constexpr float TARGET_HALF_SIZE = 1.3;
+        static constexpr float TARGET_THICKNESS = 0.01;
 
         // level dimensions in world coordinates
         float m_levelYMin;
@@ -97,8 +102,8 @@ namespace TiltBall
         float m_levelZMin;
         float m_levelZMax;
 
-        float m_holeX;
-        float m_holeZ;
+        float m_targetX;
+        float m_targetZ;
 
         float m_cameraX;
         float m_cameraY;
@@ -107,6 +112,7 @@ namespace TiltBall
         std::vector<btCollisionShape*> m_collisionShapes;
         btRigidBody *m_levelBody;
         btRigidBody *m_ballBody;
+        btRigidBody *m_targetBody;
     };
 }
 

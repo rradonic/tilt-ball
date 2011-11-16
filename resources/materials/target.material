@@ -1,4 +1,4 @@
-material Materials/Hole
+material Materials/Target
 {
     receive_shadows on
 
