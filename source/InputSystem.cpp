@@ -26,8 +26,7 @@ namespace TiltBall
         m_inputManager(createInputSystem(p_ogreRoot)),
         m_keyboard(dynamic_cast<OIS::Keyboard*>(m_inputManager->
                                                 createInputObject(OIS::OISKeyboard, true))),
-        m_mouse(dynamic_cast<OIS::Mouse*>(m_inputManager->createInputObject(OIS::OISMouse, true))),
-        m_inputSystemDestroyed(false)
+        m_mouse(dynamic_cast<OIS::Mouse*>(m_inputManager->createInputObject(OIS::OISMouse, true)))
     {
         unsigned int width, height, depth;
         p_ogreRoot->getRenderTarget("main_window")->getMetrics(width, height, depth);

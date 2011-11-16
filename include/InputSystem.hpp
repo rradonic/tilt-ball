@@ -53,8 +53,6 @@ namespace TiltBall
         OIS::InputManager *m_inputManager;
         OIS::Keyboard *m_keyboard;
         OIS::Mouse *m_mouse;
-
-        bool m_inputSystemDestroyed;
     };
 }
 
