@@ -33,6 +33,7 @@ namespace TiltBall
     Level::Level(Engine *p_engine, std::string p_levelFileName) :
         m_level(createSceneNode(p_engine, "level")),
         m_ball(createSceneNode(p_engine, "ball")),
+        m_target(createSceneNode(p_engine, "target")),
         m_engine(p_engine)
     {
         load(p_levelFileName);
@@ -60,11 +61,12 @@ namespace TiltBall
 
     void Level::buildLevel()
     {
-        // bottom surface and walls all go into a compound shape
+        // bottom surface and walls all go into a compound shape,
+        // making the level; the target is a separate shape so we can
+        // test for collision separately
         btCompoundShape *compoundShape = new btCompoundShape();
 
-        std::vector<WorldObject> bottomSurface = buildBottomSurface("Materials/Level1Floor",
-                                                                    "Materials/Hole");
+        std::vector<WorldObject> bottomSurface = buildBottomSurface("Materials/Level1Floor");
         for(std::vector<WorldObject>::iterator it = bottomSurface.begin();
             it < bottomSurface.end();
             it++)
@@ -83,6 +85,16 @@ namespace TiltBall
             compoundShape->addChildShape((*it).getTransform(),
                                          (*it).getCollisionShape());
         }
+
+        WorldObject target = buildBox("target", "Materials/Target",
+                                      m_levelXMin + m_targetX - Level::TARGET_HALF_SIZE,
+                                      m_levelYMin,
+                                      m_levelZMin + m_targetZ - Level::TARGET_HALF_SIZE,
+                                      m_levelXMin + m_targetX + Level::TARGET_HALF_SIZE,
+                                      m_levelYMin + Level::TARGET_THICKNESS,
+                                      m_levelZMin + m_targetZ + Level::TARGET_HALF_SIZE);
+
+        m_target->attachObject(target.getMovableObject());
 
         // add level to physics world
         m_collisionShapes.push_back(compoundShape);
@@ -107,10 +119,36 @@ namespace TiltBall
         m_levelBody->setActivationState(DISABLE_DEACTIVATION);
         m_engine->getDynamicsWorld()->addRigidBody(m_levelBody);
 
-        // add level to graphics world
+        // add target to physics world
+        m_collisionShapes.push_back(target.getCollisionShape());
+
+        btTransform targetTransform;
+        targetTransform.setIdentity();
+        targetTransform.setOrigin(btVector3(m_levelXMin + m_targetX,
+                                            m_levelYMin + Level::TARGET_THICKNESS / 2,
+                                            m_levelZMin + m_targetZ));
+
+        btScalar targetMass(0.f);
+        btVector3 targetLocalInertia(0, 0, 0);
+
+        OgreMotionState *targetMotionState = new OgreMotionState(targetTransform, m_target);
+
+        btRigidBody::btRigidBodyConstructionInfo targetInfo(targetMass,
+                                                            targetMotionState,
+                                                            target.getCollisionShape(),
+                                                            targetLocalInertia);
+
+        m_targetBody = new btRigidBody(targetInfo);
+        m_targetBody->setCollisionFlags(m_targetBody->getCollisionFlags() |
+                                        btCollisionObject::CF_KINEMATIC_OBJECT);
+        m_targetBody->setActivationState(DISABLE_DEACTIVATION);
+        m_engine->getDynamicsWorld()->addRigidBody(m_targetBody);
+
+        // attach level + target to the ogre scene
         Ogre::SceneManager *sceneManager = m_engine->getOgreRoot()->
             getSceneManager("main_scene_manager");
         sceneManager->getRootSceneNode()->addChild(m_level);
+        sceneManager->getRootSceneNode()->addChild(m_target);
     }
 
     void Level::buildBall()
@@ -184,8 +222,7 @@ namespace TiltBall
             createSceneNode(p_nodeName);
     }
 
-    std::vector<WorldObject> Level::buildBottomSurface(std::string p_bottomMaterial,
-                                                       std::string p_holeMaterial)
+    std::vector<WorldObject> Level::buildBottomSurface(std::string p_bottomMaterial)
     {
         std::clog << "Creating bottom surface..." << std::endl;
 
@@ -197,12 +234,12 @@ namespace TiltBall
                                          m_levelZMin - Level::WALL_HALF_THICKNESS,
                                          m_levelXMax + Level::WALL_HALF_THICKNESS,
                                          m_levelYMax,
-                                         m_levelZMin + m_holeZ - Level::HOLE_HALF_SIZE));
+                                         m_levelZMin + m_targetZ - Level::TARGET_HALF_SIZE));
 
         bottomSurface.push_back(buildBox("bottom_surface_2", p_bottomMaterial,
-                                         m_levelXMin + m_holeX + Level::HOLE_HALF_SIZE,
+                                         m_levelXMin + m_targetX + Level::TARGET_HALF_SIZE,
                                          m_levelYMin,
-                                         m_levelZMin + m_holeZ - Level::HOLE_HALF_SIZE,
+                                         m_levelZMin + m_targetZ - Level::TARGET_HALF_SIZE,
                                          m_levelXMax + Level::WALL_HALF_THICKNESS,
                                          m_levelYMax,
                                          m_levelZMax + Level::WALL_HALF_THICKNESS));
@@ -210,26 +247,18 @@ namespace TiltBall
         bottomSurface.push_back(buildBox("bottom_surface_3", p_bottomMaterial,
                                          m_levelXMin - Level::WALL_HALF_THICKNESS,
                                          m_levelYMin,
-                                         m_levelZMin + m_holeZ + Level::HOLE_HALF_SIZE,
-                                         m_levelXMin + m_holeX + Level::HOLE_HALF_SIZE,
+                                         m_levelZMin + m_targetZ + Level::TARGET_HALF_SIZE,
+                                         m_levelXMin + m_targetX + Level::TARGET_HALF_SIZE,
                                          m_levelYMax,
                                          m_levelZMax + Level::WALL_HALF_THICKNESS));
 
         bottomSurface.push_back(buildBox("bottom_surface_4", p_bottomMaterial,
                                          m_levelXMin - Level::WALL_HALF_THICKNESS,
                                          m_levelYMin,
-                                         m_levelZMin + m_holeZ - Level::HOLE_HALF_SIZE,
-                                         m_levelXMin + m_holeX - Level::HOLE_HALF_SIZE,
+                                         m_levelZMin + m_targetZ - Level::TARGET_HALF_SIZE,
+                                         m_levelXMin + m_targetX - Level::TARGET_HALF_SIZE,
                                          m_levelYMax,
-                                         m_levelZMin + m_holeZ + Level::HOLE_HALF_SIZE));
-
-        bottomSurface.push_back(buildBox("bottom_surface_5", p_holeMaterial,
-                                         m_levelXMin + m_holeX - Level::HOLE_HALF_SIZE,
-                                         m_levelYMin,
-                                         m_levelZMin + m_holeZ - Level::HOLE_HALF_SIZE,
-                                         m_levelXMin + m_holeX + Level::HOLE_HALF_SIZE,
-                                         m_levelYMin + 0.01,
-                                         m_levelZMin + m_holeZ + Level::HOLE_HALF_SIZE));
+                                         m_levelZMin + m_targetZ + Level::TARGET_HALF_SIZE));
 
         return bottomSurface;
     }
@@ -472,10 +501,10 @@ namespace TiltBall
         std::getline(lineStream, throwAway, ','); lineStream >> m_cameraZ;
 
         getNonEmptyLine(file, lineStream);
-        std::getline(lineStream, throwAway, '('); lineStream >> m_holeX;
-        std::getline(lineStream, throwAway, ','); lineStream >> m_holeZ;
+        std::getline(lineStream, throwAway, '('); lineStream >> m_targetX;
+        std::getline(lineStream, throwAway, ','); lineStream >> m_targetZ;
 
-        std::clog << "Hole coordinates: " << m_holeX << ' ' << m_holeZ << std::endl;
+        std::clog << "Target coordinates: " << m_targetX << ' ' << m_targetZ << std::endl;
 
         std::clog << "Loading walls..." << std::endl;
         // the rest of the file defines the walls
@@ -528,6 +557,11 @@ namespace TiltBall
         return m_ballBody;
     }
 
+    btRigidBody *Level::getTargetBody()
+    {
+        return m_targetBody;
+    }
+
     Ogre::SceneNode *Level::getLevelNode()
     {
         return m_level;
@@ -536,5 +570,10 @@ namespace TiltBall
     Ogre::SceneNode *Level::getBallNode()
     {
         return m_ball;
+    }
+
+    Ogre::SceneNode *Level::getTargetNode()
+    {
+        return m_target;
     }
 }
