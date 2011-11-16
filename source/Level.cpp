@@ -87,14 +87,17 @@ namespace TiltBall
         }
 
         WorldObject target = buildBox("target", "Materials/Target",
-                                      m_levelXMin + m_targetX - Level::TARGET_HALF_SIZE,
-                                      m_levelYMin,
-                                      m_levelZMin + m_targetZ - Level::TARGET_HALF_SIZE,
-                                      m_levelXMin + m_targetX + Level::TARGET_HALF_SIZE,
-                                      m_levelYMin + Level::TARGET_THICKNESS,
-                                      m_levelZMin + m_targetZ + Level::TARGET_HALF_SIZE);
+                                      0 - Level::TARGET_HALF_SIZE,
+                                      0 - Level::TARGET_THICKNESS,
+                                      0 - Level::TARGET_HALF_SIZE,
+                                      Level::TARGET_HALF_SIZE,
+                                      Level::TARGET_THICKNESS,
+                                      Level::TARGET_HALF_SIZE);
 
         m_target->attachObject(target.getMovableObject());
+        m_target->setPosition(m_levelXMin + m_targetX,
+                              m_levelYMin + Level::TARGET_THICKNESS / 2,
+                              m_levelZMin + m_targetZ);
 
         // add level to physics world
         m_collisionShapes.push_back(compoundShape);
@@ -144,11 +147,11 @@ namespace TiltBall
         m_targetBody->setActivationState(DISABLE_DEACTIVATION);
         m_engine->getDynamicsWorld()->addRigidBody(m_targetBody);
 
-        // attach level + target to the ogre scene
+        // add level + target to the graphics world
         Ogre::SceneManager *sceneManager = m_engine->getOgreRoot()->
             getSceneManager("main_scene_manager");
+        m_level->addChild(m_target);
         sceneManager->getRootSceneNode()->addChild(m_level);
-        sceneManager->getRootSceneNode()->addChild(m_target);
     }
 
     void Level::buildBall()

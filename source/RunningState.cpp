@@ -67,20 +67,41 @@ namespace TiltBall
             m_engine->getDynamicsWorld()->debugDrawWorld();
 
         Ogre::SceneNode *levelNode = m_currentLevel->getLevelNode();
+        Ogre::SceneNode *targetNode = m_currentLevel->getTargetNode();
 
         const OIS::MouseState &mouseState = inputSystem->getMouseState();
 
+        // move the level
         levelNode->roll(Ogre::Degree(-(float)mouseState.X.rel / 7), Ogre::Node::TS_LOCAL);
         levelNode->pitch(Ogre::Degree((float)mouseState.Y.rel / 7), Ogre::Node::TS_WORLD);
 
         btRigidBody *levelBody = m_currentLevel->getLevelBody();
         OgreMotionState *levelMotionState =
             dynamic_cast<OgreMotionState*>(levelBody->getMotionState());
-        btTransform newPhysicsPosition = btTransform(btQuaternion(levelNode->getOrientation().x,
-                                                                  levelNode->getOrientation().y,
-                                                                  levelNode->getOrientation().z,
-                                                                  levelNode->getOrientation().w));
-        levelMotionState->kinematicSetPosition(newPhysicsPosition);
+        btTransform newBtLevelTransform = btTransform(btQuaternion(levelNode->getOrientation().x,
+                                                                   levelNode->getOrientation().y,
+                                                                   levelNode->getOrientation().z,
+                                                                   levelNode->getOrientation().w));
+        levelMotionState->kinematicSetPosition(newBtLevelTransform);
+
+        // move the target
+        btRigidBody *targetBody = m_currentLevel->getTargetBody();
+        OgreMotionState *targetMotionState =
+            dynamic_cast<OgreMotionState*>(targetBody->getMotionState());
+
+        Ogre::Vector3 targetWorldPosition =
+            targetNode->_getDerivedPosition();
+
+        btTransform newBtTargetTransform =
+            btTransform(btQuaternion(targetNode->getOrientation().x,
+                                     targetNode->getOrientation().y,
+                                     targetNode->getOrientation().z,
+                                     targetNode->getOrientation().w),
+                        btVector3(targetWorldPosition.x,
+                                  targetWorldPosition.y,
+                                  targetWorldPosition.z));
+
+        targetMotionState->kinematicSetPosition(newBtTargetTransform);
 
         return true;
     }
