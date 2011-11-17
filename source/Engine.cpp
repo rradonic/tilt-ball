@@ -18,8 +18,10 @@ You should have received a copy of the GNU General Public License
 along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "BulletDebugDrawer.hpp"
 #include "Engine.hpp"
+#include "BulletDebugDrawer.hpp"
+#include "UserData.hpp"
+
 #include <map>
 
 namespace TiltBall
@@ -258,11 +260,15 @@ namespace TiltBall
             btCollisionObject* object2 =
                 static_cast<btCollisionObject*>(manifold->getBody1());
 
-            Ogre::SceneNode *object1Node = static_cast<Ogre::SceneNode*>(object1->getUserPointer());
-            Ogre::SceneNode *object2Node = static_cast<Ogre::SceneNode*>(object2->getUserPointer());
+            UserData *object1UserData = static_cast<UserData*>(object1->getUserPointer());
+            UserData *object2UserData = static_cast<UserData*>(object2->getUserPointer());
 
-            if(object1Node->getName() == "target" || object2Node->getName() == "target")
+            if(object1UserData->getNode()->getName() == "target" ||
+               object2UserData->getNode()->getName() == "target")
+            {
                 std::clog << "The level has been completed!" << std::endl;
+                object1UserData->getEngine()->requestQuit();
+            }
         }
     }
 }
