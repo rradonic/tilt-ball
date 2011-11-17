@@ -81,6 +81,7 @@ namespace TiltBall
         CEGUI::System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
 
         m_dynamicsWorld->setGravity(btVector3(0, -250, 0));
+        m_dynamicsWorld->setInternalTickCallback(bulletTickCallback);
 
         resourceGroupManager->createResourceGroup("Debugging");
 
@@ -242,5 +243,10 @@ namespace TiltBall
     float Engine::getTimeSinceLastFrame()
     {
         return m_timeSinceLastFrame;
+    }
+
+    void bulletTickCallback(btDynamicsWorld *p_world, btScalar p_timeStep)
+    {
+        std::clog << "Bullet tick: " << p_timeStep << std::endl;
     }
 }

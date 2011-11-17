@@ -95,6 +95,8 @@ namespace TiltBall
         bool m_requestPop;
         bool m_requestQuit;
     };
+
+    void bulletTickCallback(btDynamicsWorld *p_world, btScalar p_timeStep);
 }
 
 #endif
