@@ -120,6 +120,8 @@ namespace TiltBall
         m_levelBody->setCollisionFlags(m_levelBody->getCollisionFlags() |
                                        btCollisionObject::CF_KINEMATIC_OBJECT);
         m_levelBody->setActivationState(DISABLE_DEACTIVATION);
+        m_levelBody->setUserPointer(m_level);
+
         m_engine->getDynamicsWorld()->addRigidBody(m_levelBody);
 
         // add target to physics world
@@ -145,6 +147,8 @@ namespace TiltBall
         m_targetBody->setCollisionFlags(m_targetBody->getCollisionFlags() |
                                         btCollisionObject::CF_KINEMATIC_OBJECT);
         m_targetBody->setActivationState(DISABLE_DEACTIVATION);
+        m_targetBody->setUserPointer(m_target);
+
         m_engine->getDynamicsWorld()->addRigidBody(m_targetBody);
 
         // add level + target to the graphics world
@@ -184,6 +188,8 @@ namespace TiltBall
                                                             sphereLocalInertia);
 
         m_ballBody = new btRigidBody(sphereInfo);
+        m_ballBody->setUserPointer(m_ball);
+
         m_engine->getDynamicsWorld()->addRigidBody(m_ballBody);
 
         // add ball to graphics world
