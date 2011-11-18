@@ -57,6 +57,8 @@ namespace TiltBall
 
         bool keyReleased(const OIS::KeyEvent &evt);
 
+        void loadNextLevel();
+
     private:
         // heap object because we will want to allocate and destroy Level objects as we go from
         // level to level in the game

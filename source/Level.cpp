@@ -126,8 +126,6 @@ namespace TiltBall
         m_engine->getDynamicsWorld()->addRigidBody(m_levelBody);
 
         // add target to physics world
-        m_collisionShapes.push_back(target.getCollisionShape());
-
         btTransform targetTransform;
         targetTransform.setIdentity();
         targetTransform.setOrigin(btVector3(m_levelXMin + m_targetX,
@@ -202,32 +200,41 @@ namespace TiltBall
     Level::~Level()
     {
         m_engine->getOgreRoot()->getSceneManager("main_scene_manager")->clearScene();
+        m_engine->getOgreRoot()->getSceneManager("main_scene_manager")->destroyAllCameras();
+        m_engine->getOgreRoot()->getRenderTarget("main_window")->removeAllViewports();
 
         //remove the rigidbodies from the dynamics world and delete them
-        int i;
         btDiscreteDynamicsWorld *dynamicsWorld = m_engine->getDynamicsWorld();
-        for(i = dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
+        for(int i = dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
         {
-            btCollisionObject *obj = dynamicsWorld->getCollisionObjectArray()[i];
-            btRigidBody *body = btRigidBody::upcast(obj);
+            btCollisionObject *object = dynamicsWorld->getCollisionObjectArray()[i];
+            btRigidBody *body = btRigidBody::upcast(object);
 
-            if(body->getMotionState())
-                delete body->getMotionState();
+            if(body)
+            {
+                if(body->getMotionState())
+                    delete body->getMotionState();
 
-            UserData *data = static_cast<UserData*>(body->getUserPointer());
+                dynamicsWorld->removeRigidBody(body);
+            }
+            else
+                dynamicsWorld->removeCollisionObject(object);
+
+            UserData *data = static_cast<UserData*>(object->getUserPointer());
             if(data)
                 delete data;
 
-            dynamicsWorld->removeCollisionObject(obj);
-            delete obj;
+            delete object;
         }
 
-        // delete collision shapes
-        for(std::vector<btCollisionShape*>::size_type j = 0; j < m_collisionShapes.size(); j++)
+        for(std::vector<btCollisionShape*>::iterator it = m_collisionShapes.begin();
+            it < m_collisionShapes.end();
+            it++)
         {
-            btCollisionShape *shape = m_collisionShapes[j];
-            delete shape;
+            delete (*it);
         }
+
+        m_collisionShapes.clear();
     }
 
     Ogre::SceneNode *Level::createSceneNode(Engine *p_engine, std::string p_nodeName)
