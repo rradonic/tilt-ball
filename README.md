@@ -2,7 +2,8 @@ TiltBall
 ========
 
 TiltBall is a puzzle game in which the goal is to get the ball into
-the hole by tilting the maze.
+the hole by tilting the maze. Levels are built using a plaintext level
+format, making level creation and editing easy.
 
 Installation
 ------------
