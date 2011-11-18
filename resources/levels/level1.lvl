@@ -2,7 +2,8 @@ name: level1
 dimensions: 45x35
 camera: (0, 34, 0.5)
 
-hole: (1.8, 2)
+target: (1.8, 2)
+ball: (0, -1)
 
 (0, 0) - (0, 35)
 (0, 35) - (45, 35)

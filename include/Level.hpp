@@ -105,6 +105,9 @@ namespace TiltBall
         float m_targetX;
         float m_targetZ;
 
+        float m_ballStartingX;
+        float m_ballStartingZ;
+
         float m_cameraX;
         float m_cameraY;
         float m_cameraZ;
