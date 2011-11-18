@@ -68,6 +68,8 @@ namespace TiltBall
 
         float getTimeSinceLastFrame();
 
+        GameState *getCurrentState();
+
     private:
         void popState();
 

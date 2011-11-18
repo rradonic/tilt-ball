@@ -21,6 +21,7 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 #include "Engine.hpp"
 #include "BulletDebugDrawer.hpp"
 #include "UserData.hpp"
+#include "RunningState.hpp"
 
 #include <map>
 
@@ -247,6 +248,11 @@ namespace TiltBall
         return m_timeSinceLastFrame;
     }
 
+    GameState *Engine::getCurrentState()
+    {
+        return m_states.back();
+    }
+
     void bulletTickCallback(btDynamicsWorld *p_world, btScalar p_timeStep)
     {
         int numManifolds = p_world->getDispatcher()->getNumManifolds();
@@ -267,7 +273,12 @@ namespace TiltBall
                object2UserData->getNode()->getName() == "target")
             {
                 std::clog << "The level has been completed!" << std::endl;
-                object1UserData->getEngine()->requestQuit();
+
+                // if the physics simulation is running, we must be in
+                // RunningState
+                RunningState *state =
+                    dynamic_cast<RunningState*>(object1UserData->getEngine()->getCurrentState());
+                state->loadNextLevel();
             }
         }
     }

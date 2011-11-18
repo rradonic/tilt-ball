@@ -135,4 +135,11 @@ namespace TiltBall
     {
         return true;
     }
+
+    void RunningState::loadNextLevel()
+    {
+        delete m_currentLevel;
+
+        m_currentLevel = new Level(m_engine, "../resources/levels/level2.lvl");
+    }
 }
