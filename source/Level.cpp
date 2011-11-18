@@ -164,7 +164,7 @@ namespace TiltBall
             createEntity("ball", "meshes/sphere.mesh");
         ball->setMaterialName("Materials/Ball");
 
-        m_ball->setPosition(-2, 4, -2);
+        m_ball->setPosition(m_ballStartingX, 4, m_ballStartingZ);
         m_ball->attachObject(ball);
 
         // add ball to physics world
@@ -173,7 +173,7 @@ namespace TiltBall
 
         btTransform sphereTransform;
         sphereTransform.setIdentity();
-        sphereTransform.setOrigin(btVector3(-2, 2, -2));
+        sphereTransform.setOrigin(btVector3(m_ballStartingX, 4, m_ballStartingZ));
 
         btScalar sphereMass(50.f);
         btVector3 sphereLocalInertia(0, 0, 0);
@@ -527,6 +527,12 @@ namespace TiltBall
         std::getline(lineStream, throwAway, ','); lineStream >> m_targetZ;
 
         std::clog << "Target coordinates: " << m_targetX << ' ' << m_targetZ << std::endl;
+
+        getNonEmptyLine(file, lineStream);
+        std::getline(lineStream, throwAway, '('); lineStream >> m_ballStartingX;
+        std::getline(lineStream, throwAway, ','); lineStream >> m_ballStartingZ;
+
+        std::clog << "Ball coordinates: " << m_ballStartingX << ' ' << m_ballStartingZ << std::endl;
 
         std::clog << "Loading walls..." << std::endl;
         // the rest of the file defines the walls

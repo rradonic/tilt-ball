@@ -1,8 +1,9 @@
 name: level2
 dimensions: 36x20
-camera: (0, 34, 0.5)
+camera: (0, 30, 0.5)
 
-hole: (2, 2)
+target: (2, 2)
+ball: (16, 8)
 
 (0, 0) - (0, 20)
 (4, 0) - (4, 17)
