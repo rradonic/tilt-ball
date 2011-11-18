@@ -188,6 +188,7 @@ namespace TiltBall
 
         m_ballBody = new btRigidBody(sphereInfo);
         m_ballBody->setUserPointer(new UserData(m_ball, m_engine));
+        m_ballBody->setFriction(1.f);
 
         m_engine->getDynamicsWorld()->addRigidBody(m_ballBody);
 
