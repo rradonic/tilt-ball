@@ -26,4 +26,8 @@ target_link_libraries(tilt_ball
   OIS
   CEGUIBase
   CEGUIOgreRenderer
-  boost_regex)
+  boost_regex
+  openal
+  alut
+  vorbis
+  vorbisfile)

@@ -23,6 +23,10 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 #include "Level.hpp"
 #include "OgreMotionState.hpp"
 
+#include <AL/al.h>
+#include <AL/alut.h>
+#include <vorbis/vorbisfile.h>
+
 namespace TiltBall
 {
     RunningState::RunningState(Engine *p_engine) :
@@ -40,11 +44,52 @@ namespace TiltBall
         light->setPosition(0, 20, 0);
         light->setDiffuseColour(Ogre::ColourValue(0.1, 0.1, 0.1));
         light->setSpecularColour(Ogre::ColourValue(0.1, 0.1, 0.1));
+
+        // decode ogg music
+        ov_fopen("../resources/sound/music.ogg", &m_vorbis);
+
+        vorbis_info *info = ov_info(&m_vorbis, -1);
+        ALenum format = info->channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
+        ALsizei rate = info->rate;
+
+        int bitstream;
+        char tmp[32768];
+        int bytesRead;
+
+        do
+        {
+            bytesRead = ov_read(&m_vorbis, tmp, 32768, 0, 2, 1, &bitstream);
+            m_vorbisBuffer.insert(m_vorbisBuffer.end(), tmp, tmp + bytesRead);
+        }
+        while(bytesRead > 0);
+
+        ov_clear(&m_vorbis);
+
+        std::clog << m_vorbisBuffer.size() << " bytes of music read" << std::endl;
+
+        // import music into openal and starting playing
+        alutInit(0, 0);
+
+        alGenBuffers(1, &m_openalBuffer);
+        alGenSources(1, &m_openalSource);
+
+        alBufferData(m_openalBuffer,
+                     format,
+                     &m_vorbisBuffer[0],
+                     static_cast<ALsizei>(m_vorbisBuffer.size()),
+                     rate);
+
+        alSourcei(m_openalSource, AL_BUFFER, m_openalBuffer);
+        alSourcePlay(m_openalSource);
     }
 
     RunningState::~RunningState()
     {
         delete m_currentLevel;
+
+        alDeleteBuffers(1, &m_openalBuffer);
+        alDeleteSources(1, &m_openalSource);
+        alutExit();
     }
 
     void RunningState::pause()

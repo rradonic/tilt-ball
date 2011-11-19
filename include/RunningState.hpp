@@ -24,6 +24,9 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 #include "Engine.hpp"
 #include "GameState.hpp"
 
+#include <AL/al.h>
+#include <vorbis/vorbisfile.h>
+
 namespace TiltBall
 {
     class Level;
@@ -63,6 +66,12 @@ namespace TiltBall
         // heap object because we will want to allocate and destroy Level objects as we go from
         // level to level in the game
         Level *m_currentLevel;
+
+        OggVorbis_File m_vorbis;
+        std::vector<char> m_vorbisBuffer;
+
+        ALuint m_openalBuffer;
+        ALuint m_openalSource;
     };
 }
 
