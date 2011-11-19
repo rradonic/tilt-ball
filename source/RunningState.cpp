@@ -46,9 +46,10 @@ namespace TiltBall
         light->setSpecularColour(Ogre::ColourValue(0.1, 0.1, 0.1));
 
         // decode ogg music
-        ov_fopen("../resources/sound/music.ogg", &m_vorbis);
+        OggVorbis_File vorbis;
+        ov_fopen("../resources/sound/music.ogg", &vorbis);
 
-        vorbis_info *info = ov_info(&m_vorbis, -1);
+        vorbis_info *info = ov_info(&vorbis, -1);
         ALenum format = info->channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
         ALsizei rate = info->rate;
 
@@ -58,39 +59,46 @@ namespace TiltBall
 
         do
         {
-            bytesRead = ov_read(&m_vorbis, tmp, 32768, 0, 2, 1, &bitstream);
+            bytesRead = ov_read(&vorbis, tmp, 32768, 0, 2, 1, &bitstream);
             m_vorbisBuffer.insert(m_vorbisBuffer.end(), tmp, tmp + bytesRead);
         }
         while(bytesRead > 0);
 
-        ov_clear(&m_vorbis);
+        ov_clear(&vorbis);
 
         std::clog << m_vorbisBuffer.size() << " bytes of music read" << std::endl;
 
-        // import music into openal and starting playing
         alutInit(0, 0);
 
-        alGenBuffers(1, &m_openalBuffer);
-        alGenSources(1, &m_openalSource);
+        // import music into openal and starting playing
+        alGenBuffers(1, &m_musicBuffer);
+        alGenSources(1, &m_musicSource);
 
-        alBufferData(m_openalBuffer,
+        alBufferData(m_musicBuffer,
                      format,
                      &m_vorbisBuffer[0],
                      static_cast<ALsizei>(m_vorbisBuffer.size()),
                      rate);
 
-        alSourcei(m_openalSource, AL_BUFFER, m_openalBuffer);
-        alSourcef(m_openalSource, AL_GAIN, 0.3f);
+        alSourcei(m_musicSource, AL_BUFFER, m_musicBuffer);
+        alSourcef(m_musicSource, AL_GAIN, 0.3f);
 
-        alSourcePlay(m_openalSource);
+        alSourcePlay(m_musicSource);
+
+        // import click sound into openal
+        m_clickSoundBuffer = alutCreateBufferFromFile("../resources/sound/click.wav");
+        alGenSources(1, &m_clickSoundSource);
+        alSourcei(m_clickSoundSource, AL_BUFFER, m_clickSoundBuffer);
     }
 
     RunningState::~RunningState()
     {
         delete m_currentLevel;
 
-        alDeleteBuffers(1, &m_openalBuffer);
-        alDeleteSources(1, &m_openalSource);
+        alDeleteBuffers(1, &m_musicBuffer);
+        alDeleteSources(1, &m_musicSource);
+        alDeleteBuffers(1, &m_clickSoundBuffer);
+        alDeleteSources(1, &m_clickSoundSource);
         alutExit();
     }
 
@@ -198,5 +206,10 @@ namespace TiltBall
         delete m_currentLevel;
 
         m_currentLevel = new Level(m_engine, nextLevelFileName);
+    }
+
+    void RunningState::playClickSound()
+    {
+        alSourcePlay(m_clickSoundSource);
     }
 }
