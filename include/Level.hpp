@@ -34,7 +34,7 @@ namespace TiltBall
     class Level
     {
     public:
-        explicit Level(Engine *p_engine, std::string p_nodeName);
+        explicit Level(Engine *p_engine, std::string p_fileName);
 
         Level(const Level &p_other) = delete;
 

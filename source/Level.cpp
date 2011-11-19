@@ -31,12 +31,12 @@
 
 namespace TiltBall
 {
-    Level::Level(Engine *p_engine, std::string p_levelFileName) :
+    Level::Level(Engine *p_engine, std::string p_fileName) :
         m_level(createSceneNode(p_engine, "level")),
         m_ball(createSceneNode(p_engine, "ball")),
         m_target(createSceneNode(p_engine, "target")),
         m_engine(p_engine),
-        m_fileName(p_levelFileName)
+        m_fileName(p_fileName)
     {
         boost::regex r("level([[:digit:]]+)\\.lvl");
         boost::smatch matches;
@@ -44,7 +44,7 @@ namespace TiltBall
 
         m_levelNumber = atoi(std::string(matches[1]).c_str());
 
-        load(p_levelFileName);
+        load(p_fileName);
 
         std::clog << "Setting up camera..." << std::endl;
         Ogre::Camera *camera = m_engine->getOgreRoot()->getSceneManager("main_scene_manager")->
@@ -492,11 +492,11 @@ namespace TiltBall
         return WorldObject(manual, boxShape, boxTransform);
     }
 
-    void Level::load(std::string p_levelFileName)
+    void Level::load(std::string p_fileName)
     {
         std::clog << "Loading level..." << std::endl;
 
-        std::ifstream file(p_levelFileName.c_str());
+        std::ifstream file(p_fileName.c_str());
         std::istringstream lineStream;
         std::string throwAway;
 
