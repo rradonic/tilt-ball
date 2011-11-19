@@ -20,7 +20,6 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Engine.hpp"
 #include "BulletDebugDrawer.hpp"
-#include "UserData.hpp"
 #include "RunningState.hpp"
 
 #include <map>
@@ -85,6 +84,7 @@ namespace TiltBall
 
         m_dynamicsWorld->setGravity(btVector3(0, -250, 0));
         m_dynamicsWorld->setInternalTickCallback(bulletTickCallback);
+        m_dynamicsWorld->setWorldUserInfo(this);
 
         resourceGroupManager->createResourceGroup("Debugging");
 
@@ -255,7 +255,12 @@ namespace TiltBall
 
     void bulletTickCallback(btDynamicsWorld *p_world, btScalar p_timeStep)
     {
-        RunningState *state;
+        // if the physics simulation is running, we must be in
+        // RunningState, grab the pointer so we can use it
+        // below to play the clicking sound
+        Engine *engine = static_cast<Engine*>(p_world->getWorldUserInfo());
+        RunningState *state = dynamic_cast<RunningState*>(engine->getCurrentState());
+
         int numManifolds = p_world->getDispatcher()->getNumManifolds();
 
         bool click = false;
@@ -269,12 +274,10 @@ namespace TiltBall
             btCollisionObject* object2 =
                 static_cast<btCollisionObject*>(manifold->getBody1());
 
-            UserData *object1UserData = static_cast<UserData*>(object1->getUserPointer());
-            UserData *object2UserData = static_cast<UserData*>(object2->getUserPointer());
+            Ogre::SceneNode *object1Node = static_cast<Ogre::SceneNode*>(object1->getUserPointer());
+            Ogre::SceneNode *object2Node = static_cast<Ogre::SceneNode*>(object2->getUserPointer());
 
-            std::clog <<
-                object1UserData->getNode()->getName() << ' ' <<
-                object2UserData->getNode()->getName() << std::endl;
+            std::clog << object1Node->getName() << ' ' << object2Node->getName() << std::endl;
 
             for(int j = 0; j < manifold->getNumContacts(); j++)
             {
@@ -284,13 +287,9 @@ namespace TiltBall
                     click = true;
             }
 
-            // if the physics simulation is running, we must be in
-            // RunningState, grab the pointer so we can use it
-            // below to play the clicking sound
-            state = dynamic_cast<RunningState*>(object1UserData->getEngine()->getCurrentState());
 
-            if(object1UserData->getNode()->getName() == "target" ||
-               object2UserData->getNode()->getName() == "target")
+            if(object1Node->getName() == "target" ||
+               object2Node->getName() == "target")
             {
                 std::clog << "The level has been completed!" << std::endl;
 

@@ -21,7 +21,6 @@
 #include "Level.hpp"
 #include "Engine.hpp"
 #include "OgreMotionState.hpp"
-#include "UserData.hpp"
 
 #include <algorithm>
 #include <fstream>
@@ -129,7 +128,7 @@ namespace TiltBall
         m_levelBody->setCollisionFlags(m_levelBody->getCollisionFlags() |
                                        btCollisionObject::CF_KINEMATIC_OBJECT);
         m_levelBody->setActivationState(DISABLE_DEACTIVATION);
-        m_levelBody->setUserPointer(new UserData(m_level, m_engine));
+        m_levelBody->setUserPointer(m_level);
 
         m_engine->getDynamicsWorld()->addRigidBody(m_levelBody);
 
@@ -154,7 +153,7 @@ namespace TiltBall
         m_targetBody->setCollisionFlags(m_targetBody->getCollisionFlags() |
                                         btCollisionObject::CF_KINEMATIC_OBJECT);
         m_targetBody->setActivationState(DISABLE_DEACTIVATION);
-        m_targetBody->setUserPointer(new UserData(m_target, m_engine));
+        m_targetBody->setUserPointer(m_target);
 
         m_engine->getDynamicsWorld()->addRigidBody(m_targetBody);
 
@@ -195,7 +194,7 @@ namespace TiltBall
                                                             sphereLocalInertia);
 
         m_ballBody = new btRigidBody(sphereInfo);
-        m_ballBody->setUserPointer(new UserData(m_ball, m_engine));
+        m_ballBody->setUserPointer(m_ball);
         m_ballBody->setFriction(1.f);
 
         m_engine->getDynamicsWorld()->addRigidBody(m_ballBody);
@@ -228,10 +227,6 @@ namespace TiltBall
             }
             else
                 dynamicsWorld->removeCollisionObject(object);
-
-            UserData *data = static_cast<UserData*>(object->getUserPointer());
-            if(data)
-                delete data;
 
             delete object;
         }
