@@ -80,6 +80,8 @@ namespace TiltBall
                      rate);
 
         alSourcei(m_openalSource, AL_BUFFER, m_openalBuffer);
+        alSourcef(m_openalSource, AL_GAIN, 0.3f);
+
         alSourcePlay(m_openalSource);
     }
 
