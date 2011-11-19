@@ -54,6 +54,8 @@ namespace TiltBall
 
         Ogre::SceneNode *getTargetNode();
 
+        std::string getNextLevelFileName();
+
     protected:
         Ogre::SceneNode *m_level;
         Ogre::SceneNode *m_ball;
@@ -116,6 +118,9 @@ namespace TiltBall
         btRigidBody *m_levelBody;
         btRigidBody *m_ballBody;
         btRigidBody *m_targetBody;
+
+        std::string m_fileName;
+        int m_levelNumber;
     };
 }
 

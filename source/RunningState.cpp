@@ -138,8 +138,18 @@ namespace TiltBall
 
     void RunningState::loadNextLevel()
     {
+        std::string nextLevelFileName = m_currentLevel->getNextLevelFileName();
+
+        std::fstream stream(nextLevelFileName);
+        if(!stream.good())
+        {
+            m_engine->requestQuit();
+            return;
+        }
+        stream.close();
+
         delete m_currentLevel;
 
-        m_currentLevel = new Level(m_engine, "../resources/levels/level2.lvl");
+        m_currentLevel = new Level(m_engine, nextLevelFileName);
     }
 }

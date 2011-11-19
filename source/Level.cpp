@@ -28,6 +28,7 @@
 #include <sstream>
 #include <cmath>
 #include <vector>
+#include <boost/regex.hpp>
 
 namespace TiltBall
 {
@@ -35,8 +36,15 @@ namespace TiltBall
         m_level(createSceneNode(p_engine, "level")),
         m_ball(createSceneNode(p_engine, "ball")),
         m_target(createSceneNode(p_engine, "target")),
-        m_engine(p_engine)
+        m_engine(p_engine),
+        m_fileName(p_levelFileName)
     {
+        boost::regex r("level([[:digit:]]+)\\.lvl");
+        boost::smatch matches;
+        regex_search(m_fileName, matches, r);
+
+        m_levelNumber = atoi(std::string(matches[1]).c_str());
+
         load(p_levelFileName);
 
         std::clog << "Setting up camera..." << std::endl;
@@ -603,5 +611,20 @@ namespace TiltBall
     Ogre::SceneNode *Level::getTargetNode()
     {
         return m_target;
+    }
+
+    std::string Level::getNextLevelFileName()
+    {
+        boost::regex r("(.*)level([[:digit:]]+)\\.lvl");
+        boost::smatch matches;
+        regex_search(m_fileName, matches, r);
+
+        for(boost::smatch::iterator it = matches.begin(); it < matches.end(); it++)
+            std::clog << (*it) << std::endl;
+
+        std::stringstream stream;
+        stream << matches[1] << "level" << m_levelNumber + 1 << ".lvl";
+
+        return stream.str();
     }
 }
