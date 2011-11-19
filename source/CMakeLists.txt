@@ -14,8 +14,7 @@ add_executable(tilt_ball
   RunningState.cpp
   Level.cpp
   WallCoordinates.cpp
-  WorldObject.cpp
-  UserData.cpp)
+  WorldObject.cpp)
 
 target_link_libraries(tilt_ball
   LinearMath
