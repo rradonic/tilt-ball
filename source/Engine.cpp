@@ -255,7 +255,10 @@ namespace TiltBall
 
     void bulletTickCallback(btDynamicsWorld *p_world, btScalar p_timeStep)
     {
+        RunningState *state;
         int numManifolds = p_world->getDispatcher()->getNumManifolds();
+
+        bool click = false;
         for(int i = 0; i < numManifolds; i++)
         {
             btPersistentManifold *manifold =
@@ -269,17 +272,33 @@ namespace TiltBall
             UserData *object1UserData = static_cast<UserData*>(object1->getUserPointer());
             UserData *object2UserData = static_cast<UserData*>(object2->getUserPointer());
 
+            std::clog <<
+                object1UserData->getNode()->getName() << ' ' <<
+                object2UserData->getNode()->getName() << std::endl;
+
+            for(int j = 0; j < manifold->getNumContacts(); j++)
+            {
+                btManifoldPoint &point = manifold->getContactPoint(i);
+
+                if(point.getAppliedImpulse() > 600)
+                    click = true;
+            }
+
+            // if the physics simulation is running, we must be in
+            // RunningState, grab the pointer so we can use it
+            // below to play the clicking sound
+            state = dynamic_cast<RunningState*>(object1UserData->getEngine()->getCurrentState());
+
             if(object1UserData->getNode()->getName() == "target" ||
                object2UserData->getNode()->getName() == "target")
             {
                 std::clog << "The level has been completed!" << std::endl;
 
-                // if the physics simulation is running, we must be in
-                // RunningState
-                RunningState *state =
-                    dynamic_cast<RunningState*>(object1UserData->getEngine()->getCurrentState());
                 state->loadNextLevel();
             }
         }
+
+        if(click)
+            state->playClickSound();
     }
 }
