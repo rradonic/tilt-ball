@@ -25,4 +25,5 @@ target_link_libraries(tilt_ball
   OgreMain
   OIS
   CEGUIBase
-  CEGUIOgreRenderer)
+  CEGUIOgreRenderer
+  boost_regex)
