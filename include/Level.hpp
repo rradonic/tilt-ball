@@ -56,14 +56,9 @@ namespace TiltBall
 
         std::string getNextLevelFileName();
 
-    protected:
-        Ogre::SceneNode *m_level;
-        Ogre::SceneNode *m_ball;
-        Ogre::SceneNode *m_target;
-
     private:
-        Ogre::SceneNode *createSceneNode(Engine *p_engine,
-                                         std::string p_nodeName);
+        Ogre::SceneNode *initSceneNode(Engine *p_engine,
+                                       std::string p_nodeName);
 
         void load(std::string p_levelFileName);
 
@@ -86,6 +81,10 @@ namespace TiltBall
         void buildLevel();
 
         void buildBall();
+
+        Ogre::SceneNode *m_level;
+        Ogre::SceneNode *m_ball;
+        Ogre::SceneNode *m_target;
 
         Engine *m_engine;
         std::string m_name;

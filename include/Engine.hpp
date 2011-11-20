@@ -78,7 +78,7 @@ namespace TiltBall
         // heap object because we have to allocate it within a method
         // and return it from the method
         Ogre::Root *m_ogreRoot;
-        Ogre::Root *createOgreRoot();
+        Ogre::Root *initOgreRoot();
 
         btDefaultCollisionConfiguration *m_collisionConfiguration;
         btCollisionDispatcher *m_dispatcher;
