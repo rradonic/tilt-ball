@@ -27,7 +27,7 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 namespace TiltBall
 {
     Engine::Engine() :
-        m_ogreRoot(createOgreRoot()),
+        m_ogreRoot(initOgreRoot()),
 
         m_collisionConfiguration(new btDefaultCollisionConfiguration()),
         m_dispatcher(new btCollisionDispatcher(m_collisionConfiguration)),
@@ -92,7 +92,7 @@ namespace TiltBall
         m_dynamicsWorld->setDebugDrawer(m_debugDrawer);
     }
 
-    Ogre::Root *Engine::createOgreRoot()
+    Ogre::Root *Engine::initOgreRoot()
     {
         std::clog << "Initializing Ogre..." << std::endl;
         Ogre::Root *ogreRoot = new Ogre::Root("", "");

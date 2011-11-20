@@ -32,9 +32,9 @@
 namespace TiltBall
 {
     Level::Level(Engine *p_engine, std::string p_fileName) :
-        m_level(createSceneNode(p_engine, "level")),
-        m_ball(createSceneNode(p_engine, "ball")),
-        m_target(createSceneNode(p_engine, "target")),
+        m_level(initSceneNode(p_engine, "level")),
+        m_ball(initSceneNode(p_engine, "ball")),
+        m_target(initSceneNode(p_engine, "target")),
         m_engine(p_engine),
         m_fileName(p_fileName)
     {
@@ -235,7 +235,7 @@ namespace TiltBall
         m_collisionShapes.clear();
     }
 
-    Ogre::SceneNode *Level::createSceneNode(Engine *p_engine, std::string p_nodeName)
+    Ogre::SceneNode *Level::initSceneNode(Engine *p_engine, std::string p_nodeName)
     {
         return p_engine->getOgreRoot()->getSceneManager("main_scene_manager")->
             createSceneNode(p_nodeName);
