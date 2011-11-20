@@ -120,7 +120,6 @@ namespace TiltBall
         btRigidBody *m_targetBody;
 
         std::string m_fileName;
-        int m_levelNumber;
     };
 }
 
