@@ -38,12 +38,6 @@ namespace TiltBall
         m_engine(p_engine),
         m_fileName(p_fileName)
     {
-        boost::regex r("level([[:digit:]]+)\\.lvl");
-        boost::smatch matches;
-        regex_search(m_fileName, matches, r);
-
-        m_levelNumber = atoi(std::string(matches[1]).c_str());
-
         load(p_fileName);
 
         std::clog << "Setting up camera..." << std::endl;
@@ -610,15 +604,14 @@ namespace TiltBall
 
     std::string Level::getNextLevelFileName()
     {
-        boost::regex r("(.*)level([[:digit:]]+)\\.lvl");
+        boost::regex regex("(.*)level([[:digit:]]+)\\.lvl");
         boost::smatch matches;
-        regex_search(m_fileName, matches, r);
+        regex_search(m_fileName, matches, regex);
 
-        for(boost::smatch::iterator it = matches.begin(); it < matches.end(); it++)
-            std::clog << (*it) << std::endl;
+        int levelNumber = atoi(matches[2].str().c_str());
 
         std::stringstream stream;
-        stream << matches[1] << "level" << m_levelNumber + 1 << ".lvl";
+        stream << matches[1] << "level" << levelNumber + 1 << ".lvl";
 
         return stream.str();
     }
