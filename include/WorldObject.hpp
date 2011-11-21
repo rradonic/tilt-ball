@@ -29,9 +29,9 @@ namespace TiltBall
     class WorldObject
     {
     public:
-        explicit WorldObject(Ogre::MovableObject *m_movableObject,
-                             btCollisionShape *m_collisionShape,
-                             btTransform m_transform);
+        WorldObject(Ogre::MovableObject *m_movableObject,
+                    btCollisionShape *m_collisionShape,
+                    btTransform m_transform);
 
         Ogre::MovableObject *getMovableObject();
 

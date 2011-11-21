@@ -28,10 +28,10 @@ namespace TiltBall
     class WallCoordinates
     {
     public:
-        explicit WallCoordinates(int p_beginX,
-                                 int p_beginZ,
-                                 int p_endX,
-                                 int p_endZ);
+        WallCoordinates(int p_beginX,
+                        int p_beginZ,
+                        int p_endX,
+                        int p_endZ);
 
         int getBeginX();
 
