@@ -26,8 +26,8 @@ namespace TiltBall
     class OgreMotionState : public btMotionState
     {
     public:
-        explicit OgreMotionState(btTransform &p_initialpos,
-                                 Ogre::SceneNode *p_node);
+        OgreMotionState(btTransform &p_initialpos,
+                        Ogre::SceneNode *p_node);
 
         void setNode(Ogre::SceneNode *p_node);
 

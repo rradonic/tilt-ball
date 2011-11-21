@@ -40,7 +40,7 @@ namespace TiltBall
     class Engine: public Ogre::FrameListener
     {
     public:
-        explicit Engine();
+        Engine();
 
         Engine(const Engine &p_other) = delete;
 
