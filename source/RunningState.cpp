@@ -29,17 +29,17 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace TiltBall
 {
-    RunningState::RunningState(Engine *p_engine) :
+    RunningState::RunningState(Engine* p_engine) :
         GameState(p_engine),
         m_currentLevel(new Level(p_engine, "../resources/levels/level1.lvl"))
     {
         std::clog << "Entering running state..." << std::endl;
-        Ogre::SceneManager *sceneManager = m_engine->getOgreRoot()->
+        Ogre::SceneManager* sceneManager = m_engine->getOgreRoot()->
             getSceneManager("main_scene_manager");
 
         std::clog << "Setting up lighting..." << std::endl;
         sceneManager->setAmbientLight(Ogre::ColourValue(0.8, 0.8, 0.8));
-        Ogre::Light *light = sceneManager->createLight("main_light");
+        Ogre::Light* light = sceneManager->createLight("main_light");
         light->setType(Ogre::Light::LT_POINT);
         light->setPosition(0, 20, 0);
         light->setDiffuseColour(Ogre::ColourValue(0.1, 0.1, 0.1));
@@ -49,7 +49,7 @@ namespace TiltBall
         OggVorbis_File vorbis;
         ov_fopen("../resources/sound/music.ogg", &vorbis);
 
-        vorbis_info *info = ov_info(&vorbis, -1);
+        vorbis_info* info = ov_info(&vorbis, -1);
         ALenum format = info->channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
         ALsizei rate = info->rate;
 
@@ -110,28 +110,28 @@ namespace TiltBall
     {
     }
 
-    bool RunningState::update(const Ogre::FrameEvent &p_event)
+    bool RunningState::update(const Ogre::FrameEvent& p_event)
     {
         m_engine->getDynamicsWorld()->stepSimulation(m_engine->getTimeSinceLastFrame());
 
-        InputSystem *inputSystem = m_engine->getInputSystem();
+        InputSystem* inputSystem = m_engine->getInputSystem();
         inputSystem->capture();
 
         m_engine->getDebugDrawer()->clear();
         if(inputSystem->isKeyDown(OIS::KC_F1))
             m_engine->getDynamicsWorld()->debugDrawWorld();
 
-        Ogre::SceneNode *levelNode = m_currentLevel->getLevelNode();
-        Ogre::SceneNode *targetNode = m_currentLevel->getTargetNode();
+        Ogre::SceneNode* levelNode = m_currentLevel->getLevelNode();
+        Ogre::SceneNode* targetNode = m_currentLevel->getTargetNode();
 
-        const OIS::MouseState &mouseState = inputSystem->getMouseState();
+        const OIS::MouseState& mouseState = inputSystem->getMouseState();
 
         // move the level
         levelNode->roll(Ogre::Degree(-(float)mouseState.X.rel / 7), Ogre::Node::TS_LOCAL);
         levelNode->pitch(Ogre::Degree((float)mouseState.Y.rel / 7), Ogre::Node::TS_WORLD);
 
-        btRigidBody *levelBody = m_currentLevel->getLevelBody();
-        OgreMotionState *levelMotionState =
+        btRigidBody* levelBody = m_currentLevel->getLevelBody();
+        OgreMotionState* levelMotionState =
             dynamic_cast<OgreMotionState*>(levelBody->getMotionState());
         btTransform newBtLevelTransform = btTransform(btQuaternion(levelNode->getOrientation().x,
                                                                    levelNode->getOrientation().y,
@@ -140,8 +140,8 @@ namespace TiltBall
         levelMotionState->kinematicSetPosition(newBtLevelTransform);
 
         // move the target
-        btRigidBody *targetBody = m_currentLevel->getTargetBody();
-        OgreMotionState *targetMotionState =
+        btRigidBody* targetBody = m_currentLevel->getTargetBody();
+        OgreMotionState* targetMotionState =
             dynamic_cast<OgreMotionState*>(targetBody->getMotionState());
 
         Ogre::Vector3 targetWorldPosition =
@@ -161,22 +161,22 @@ namespace TiltBall
         return true;
     }
 
-    bool RunningState::mouseMoved(const OIS::MouseEvent &evt)
+    bool RunningState::mouseMoved(const OIS::MouseEvent& evt)
     {
         return true;
     }
 
-    bool RunningState::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID)
+    bool RunningState::mousePressed(const OIS::MouseEvent& evt, OIS::MouseButtonID)
     {
         return true;
     }
 
-    bool RunningState::mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID)
+    bool RunningState::mouseReleased(const OIS::MouseEvent& evt, OIS::MouseButtonID)
     {
         return true;
     }
 
-    bool RunningState::keyPressed(const OIS::KeyEvent &evt)
+    bool RunningState::keyPressed(const OIS::KeyEvent& evt)
     {
         if (evt.key == OIS::KC_Q)
             m_engine->requestQuit();
@@ -186,7 +186,7 @@ namespace TiltBall
         return true;
     }
 
-    bool RunningState::keyReleased(const OIS::KeyEvent &evt)
+    bool RunningState::keyReleased(const OIS::KeyEvent& evt)
     {
         return true;
     }

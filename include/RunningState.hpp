@@ -33,11 +33,11 @@ namespace TiltBall
     class RunningState: public GameState
     {
     public:
-        explicit RunningState(Engine *p_engine);
+        explicit RunningState(Engine* p_engine);
 
-        RunningState(const RunningState &p_other) = delete;
+        RunningState(const RunningState& p_other) = delete;
 
-        RunningState &operator=(const RunningState &p_other) = delete;
+        RunningState& operator=(const RunningState& p_other) = delete;
 
         ~RunningState();
 
@@ -45,19 +45,19 @@ namespace TiltBall
 
         void resume();
 
-        bool update(const Ogre::FrameEvent &p_event);
+        bool update(const Ogre::FrameEvent& p_event);
 
-        bool mouseMoved(const OIS::MouseEvent &evt);
+        bool mouseMoved(const OIS::MouseEvent& evt);
 
-        bool mousePressed(const OIS::MouseEvent &evt,
+        bool mousePressed(const OIS::MouseEvent& evt,
                           OIS::MouseButtonID);
 
-        bool mouseReleased(const OIS::MouseEvent &evt,
+        bool mouseReleased(const OIS::MouseEvent& evt,
                            OIS::MouseButtonID);
 
-        bool keyPressed(const OIS::KeyEvent &evt);
+        bool keyPressed(const OIS::KeyEvent& evt);
 
-        bool keyReleased(const OIS::KeyEvent &evt);
+        bool keyReleased(const OIS::KeyEvent& evt);
 
         void loadNextLevel();
 
@@ -66,7 +66,7 @@ namespace TiltBall
     private:
         // heap object because we will want to allocate and destroy Level objects as we go from
         // level to level in the game
-        Level *m_currentLevel;
+        Level* m_currentLevel;
 
         std::vector<char> m_vorbisBuffer;
 

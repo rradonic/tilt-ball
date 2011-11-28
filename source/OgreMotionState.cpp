@@ -22,24 +22,24 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace TiltBall
 {
-    OgreMotionState::OgreMotionState(btTransform &p_initialpos,
-                                     Ogre::SceneNode *p_node)
+    OgreMotionState::OgreMotionState(btTransform& p_initialpos,
+                                     Ogre::SceneNode* p_node)
     {
         m_node = p_node;
         m_position = p_initialpos;
     }
 
-    void OgreMotionState::setNode(Ogre::SceneNode *p_node)
+    void OgreMotionState::setNode(Ogre::SceneNode* p_node)
     {
         m_node = p_node;
     }
 
-    void OgreMotionState::getWorldTransform(btTransform &p_worldTrans) const
+    void OgreMotionState::getWorldTransform(btTransform& p_worldTrans) const
     {
         p_worldTrans = m_position;
     }
 
-    void OgreMotionState::setWorldTransform(const btTransform &p_worldTrans)
+    void OgreMotionState::setWorldTransform(const btTransform& p_worldTrans)
     {
         if(NULL == m_node) return; // silently return before we set a node
         btQuaternion rot = p_worldTrans.getRotation();
@@ -48,7 +48,7 @@ namespace TiltBall
         m_node->setPosition(pos.x(), pos.y(), pos.z());
     }
 
-    void OgreMotionState::kinematicSetPosition(btTransform &p_worldTrans)
+    void OgreMotionState::kinematicSetPosition(btTransform& p_worldTrans)
     {
         m_position = p_worldTrans;
     }

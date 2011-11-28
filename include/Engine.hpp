@@ -42,25 +42,25 @@ namespace TiltBall
     public:
         Engine();
 
-        Engine(const Engine &p_other) = delete;
+        Engine(const Engine& p_other) = delete;
 
-        Engine &operator=(const Engine &p_other) = delete;
+        Engine& operator=(const Engine& p_other) = delete;
 
         ~Engine();
 
-        void pushState(GameState *p_state);
+        void pushState(GameState* p_state);
 
         void mainLoop();
 
-        bool frameStarted(const Ogre::FrameEvent &p_event);
+        bool frameStarted(const Ogre::FrameEvent& p_event);
 
-        Ogre::Root *getOgreRoot();
+        Ogre::Root* getOgreRoot();
 
-        InputSystem *getInputSystem();
+        InputSystem* getInputSystem();
 
-        btDiscreteDynamicsWorld *getDynamicsWorld();
+        btDiscreteDynamicsWorld* getDynamicsWorld();
 
-        BulletDebugDrawer *getDebugDrawer();
+        BulletDebugDrawer* getDebugDrawer();
 
         void requestPop();
 
@@ -68,7 +68,7 @@ namespace TiltBall
 
         float getTimeSinceLastFrame();
 
-        GameState *getCurrentState();
+        GameState* getCurrentState();
 
     private:
         void popState();
@@ -77,19 +77,19 @@ namespace TiltBall
 
         // heap object because we have to allocate it within a method
         // and return it from the method
-        Ogre::Root *m_ogreRoot;
-        Ogre::Root *initOgreRoot();
+        Ogre::Root* m_ogreRoot;
+        Ogre::Root* initOgreRoot();
 
-        btDefaultCollisionConfiguration *m_collisionConfiguration;
-        btCollisionDispatcher *m_dispatcher;
-        btBroadphaseInterface *m_broadphase;
-        btConstraintSolver *m_solver;
-        btDiscreteDynamicsWorld *m_dynamicsWorld;
-        BulletDebugDrawer *m_debugDrawer;
+        btDefaultCollisionConfiguration* m_collisionConfiguration;
+        btCollisionDispatcher* m_dispatcher;
+        btBroadphaseInterface* m_broadphase;
+        btConstraintSolver* m_solver;
+        btDiscreteDynamicsWorld* m_dynamicsWorld;
+        BulletDebugDrawer* m_debugDrawer;
 
-        InputSystem *m_inputSystem;
+        InputSystem* m_inputSystem;
 
-        CEGUI::OgreRenderer *m_ceguiRenderer;
+        CEGUI::OgreRenderer* m_ceguiRenderer;
 
         float m_timeSinceLastFrame;
         std::vector<GameState*> m_states;
@@ -98,7 +98,7 @@ namespace TiltBall
         bool m_requestQuit;
     };
 
-    void bulletTickCallback(btDynamicsWorld *p_world, btScalar p_timeStep);
+    void bulletTickCallback(btDynamicsWorld* p_world, btScalar p_timeStep);
 }
 
 #endif

@@ -34,36 +34,36 @@ namespace TiltBall
     class Level
     {
     public:
-        Level(Engine *p_engine, std::string p_fileName);
+        Level(Engine* p_engine, std::string p_fileName);
 
-        Level(const Level &p_other) = delete;
+        Level(const Level& p_other) = delete;
 
-        Level &operator=(const Level &p_other) = delete;
+        Level& operator=(const Level& p_other) = delete;
 
         ~Level();
 
-        btRigidBody *getLevelBody();
+        btRigidBody* getLevelBody();
 
-        btRigidBody *getBallBody();
+        btRigidBody* getBallBody();
 
-        btRigidBody *getTargetBody();
+        btRigidBody* getTargetBody();
 
-        Ogre::SceneNode *getLevelNode();
+        Ogre::SceneNode* getLevelNode();
 
-        Ogre::SceneNode *getBallNode();
+        Ogre::SceneNode* getBallNode();
 
-        Ogre::SceneNode *getTargetNode();
+        Ogre::SceneNode* getTargetNode();
 
         std::string getNextLevelFileName();
 
     private:
-        Ogre::SceneNode *initSceneNode(Engine *p_engine,
+        Ogre::SceneNode* initSceneNode(Engine* p_engine,
                                        std::string p_nodeName);
 
         void load(std::string p_levelFileName);
 
-        bool getNonEmptyLine(std::ifstream &p_file,
-                             std::istringstream &p_lineStream);
+        bool getNonEmptyLine(std::ifstream& p_file,
+                             std::istringstream& p_lineStream);
 
         WorldObject buildBox(std::string p_name,
                              std::string p_material,
@@ -74,8 +74,8 @@ namespace TiltBall
                              float p_y2,
                              float p_z2);
 
-        btRigidBody *attachBodyToPhysicsWorld(Ogre::SceneNode *p_sceneNode,
-                                              btCollisionShape *p_collisionShape,
+        btRigidBody* attachBodyToPhysicsWorld(Ogre::SceneNode* p_sceneNode,
+                                              btCollisionShape* p_collisionShape,
                                               float p_mass,
                                               float p_originX,
                                               float p_originY,
@@ -89,11 +89,11 @@ namespace TiltBall
 
         void buildBall();
 
-        Ogre::SceneNode *m_level;
-        Ogre::SceneNode *m_ball;
-        Ogre::SceneNode *m_target;
+        Ogre::SceneNode* m_level;
+        Ogre::SceneNode* m_ball;
+        Ogre::SceneNode* m_target;
 
-        Engine *m_engine;
+        Engine* m_engine;
         std::string m_name;
         std::vector<WallCoordinates> m_walls;
 
@@ -121,9 +121,9 @@ namespace TiltBall
         float m_cameraZ;
 
         std::vector<btCollisionShape*> m_collisionShapes;
-        btRigidBody *m_levelBody;
-        btRigidBody *m_ballBody;
-        btRigidBody *m_targetBody;
+        btRigidBody* m_levelBody;
+        btRigidBody* m_ballBody;
+        btRigidBody* m_targetBody;
 
         std::string m_fileName;
     };

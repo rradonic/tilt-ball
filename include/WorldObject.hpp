@@ -29,19 +29,19 @@ namespace TiltBall
     class WorldObject
     {
     public:
-        WorldObject(Ogre::MovableObject *p_movableObject,
-                    btCollisionShape *p_collisionShape,
+        WorldObject(Ogre::MovableObject* p_movableObject,
+                    btCollisionShape* p_collisionShape,
                     btTransform p_transform);
 
-        Ogre::MovableObject *getMovableObject();
+        Ogre::MovableObject* getMovableObject();
 
-        btCollisionShape *getCollisionShape();
+        btCollisionShape* getCollisionShape();
 
         btTransform getTransform();
 
     private:
-        Ogre::MovableObject *m_movableObject;
-        btCollisionShape *m_collisionShape;
+        Ogre::MovableObject* m_movableObject;
+        btCollisionShape* m_collisionShape;
         btTransform m_transform;
     };
 }

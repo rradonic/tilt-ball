@@ -25,7 +25,7 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace TiltBall
 {
-    BulletDebugDrawer::BulletDebugDrawer(Engine *p_engine) :
+    BulletDebugDrawer::BulletDebugDrawer(Engine* p_engine) :
         m_engine(p_engine),
         m_material(
             dynamic_cast<Ogre::Material*>(
@@ -39,20 +39,20 @@ namespace TiltBall
         m_material->getTechnique(0)->getPass(0)->setSelfIllumination(0,0,1);
     }
 
-    void BulletDebugDrawer::drawLine(const btVector3 &p_from,
-                                     const btVector3 &p_to,
-                                     const btVector3 &p_color)
+    void BulletDebugDrawer::drawLine(const btVector3& p_from,
+                                     const btVector3& p_to,
+                                     const btVector3& p_color)
     {
-        Ogre::SceneManager *sceneManager = m_engine->getOgreRoot()->
+        Ogre::SceneManager* sceneManager = m_engine->getOgreRoot()->
             getSceneManager("main_scene_manager");
 
         std::ostringstream lineNodeName;
         lineNodeName << "lineNode" << m_lines.size();
         std::ostringstream lineObjectName;
         lineObjectName << "lineObject" << m_lines.size();
-        Ogre::SceneNode *manualObjectNode = sceneManager->getRootSceneNode()->
+        Ogre::SceneNode* manualObjectNode = sceneManager->getRootSceneNode()->
             createChildSceneNode(lineNodeName.str());
-        Ogre::ManualObject *manualObject = sceneManager->createManualObject(lineObjectName.str());
+        Ogre::ManualObject* manualObject = sceneManager->createManualObject(lineObjectName.str());
 
         manualObject->begin("Debug/BulletDebugMaterial", Ogre::RenderOperation::OT_LINE_LIST);
         manualObject->position(p_from.getX(), p_from.getY(), p_from.getZ());
@@ -65,13 +65,13 @@ namespace TiltBall
 
     void BulletDebugDrawer::clear()
     {
-        Ogre::SceneManager *sceneManager =
+        Ogre::SceneManager* sceneManager =
             m_engine->getOgreRoot()->getSceneManager("main_scene_manager");
 
         std::vector<Ogre::SceneNode*>::iterator iter;
         for(iter = m_lines.begin(); iter < m_lines.end(); iter++)
         {
-            Ogre::ManualObject *manualObject =
+            Ogre::ManualObject* manualObject =
                 dynamic_cast<Ogre::ManualObject*>((*iter)->getAttachedObject(0));
 
             (*iter)->detachObject(manualObject);
@@ -83,19 +83,19 @@ namespace TiltBall
         m_lines.clear();
     }
 
-    void BulletDebugDrawer::drawContactPoint(const btVector3 &p_pointOnB,
-                                             const btVector3 &p_normalOnB,
+    void BulletDebugDrawer::drawContactPoint(const btVector3& p_pointOnB,
+                                             const btVector3& p_normalOnB,
                                              btScalar p_distance,
                                              int p_lifeTime,
-                                             const btVector3 &p_color)
+                                             const btVector3& p_color)
     {
     }
 
-    void BulletDebugDrawer::reportErrorWarning(const char *p_warningString)
+    void BulletDebugDrawer::reportErrorWarning(const char* p_warningString)
     {
     }
 
-    void BulletDebugDrawer::draw3dText(const btVector3 &p_location, const char *p_textString)
+    void BulletDebugDrawer::draw3dText(const btVector3& p_location, const char* p_textString)
     {
     }
 
