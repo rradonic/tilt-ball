@@ -74,6 +74,13 @@ namespace TiltBall
                              float p_y2,
                              float p_z2);
 
+        btRigidBody *attachBodyToPhysicsWorld(Ogre::SceneNode *p_sceneNode,
+                                              btCollisionShape *p_collisionShape,
+                                              float p_mass,
+                                              float p_originX,
+                                              float p_originY,
+                                              float p_originZ);
+
         std::vector<WorldObject> buildBottomSurface(std::string p_bottomMaterial);
 
         std::vector<WorldObject> buildWalls(std::string p_material);

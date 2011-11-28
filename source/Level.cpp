@@ -104,52 +104,20 @@ namespace TiltBall
         // add level to physics world
         m_collisionShapes.push_back(compoundShape);
 
-        btTransform levelTransform;
-        levelTransform.setIdentity();
-        levelTransform.setOrigin(btVector3(0, 0, 0));
-
-        btScalar levelMass(0.f);
-        btVector3 levelLocalInertia(0, 0, 0);
-
-        OgreMotionState *levelMotionState = new OgreMotionState(levelTransform, m_level);
-
-        btRigidBody::btRigidBodyConstructionInfo levelInfo(levelMass,
-                                                           levelMotionState,
-                                                           compoundShape,
-                                                           levelLocalInertia);
-
-        m_levelBody = new btRigidBody(levelInfo);
-        m_levelBody->setCollisionFlags(m_levelBody->getCollisionFlags() |
-                                       btCollisionObject::CF_KINEMATIC_OBJECT);
-        m_levelBody->setActivationState(DISABLE_DEACTIVATION);
-        m_levelBody->setUserPointer(m_level);
-
-        m_engine->getDynamicsWorld()->addRigidBody(m_levelBody);
+        m_levelBody = attachBodyToPhysicsWorld(m_level,
+                                               compoundShape,
+                                               0,
+                                               0,
+                                               0,
+                                               0);
 
         // add target to physics world
-        btTransform targetTransform;
-        targetTransform.setIdentity();
-        targetTransform.setOrigin(btVector3(m_levelXMin + m_targetX,
-                                            m_levelYMin + Level::TARGET_THICKNESS / 2,
-                                            m_levelZMin + m_targetZ));
-
-        btScalar targetMass(0.f);
-        btVector3 targetLocalInertia(0, 0, 0);
-
-        OgreMotionState *targetMotionState = new OgreMotionState(targetTransform, m_target);
-
-        btRigidBody::btRigidBodyConstructionInfo targetInfo(targetMass,
-                                                            targetMotionState,
-                                                            target.getCollisionShape(),
-                                                            targetLocalInertia);
-
-        m_targetBody = new btRigidBody(targetInfo);
-        m_targetBody->setCollisionFlags(m_targetBody->getCollisionFlags() |
-                                        btCollisionObject::CF_KINEMATIC_OBJECT);
-        m_targetBody->setActivationState(DISABLE_DEACTIVATION);
-        m_targetBody->setUserPointer(m_target);
-
-        m_engine->getDynamicsWorld()->addRigidBody(m_targetBody);
+        m_targetBody = attachBodyToPhysicsWorld(m_target,
+                                                target.getCollisionShape(),
+                                                0,
+                                                m_levelXMin + m_targetX,
+                                                m_levelYMin + Level::TARGET_THICKNESS / 2,
+                                                m_levelZMin + m_targetZ);
 
         // add level + target to the graphics world
         Ogre::SceneManager *sceneManager = m_engine->getOgreRoot()->
@@ -172,26 +140,12 @@ namespace TiltBall
         btCollisionShape *sphereShape = new btSphereShape(btScalar(1.0f));
         m_collisionShapes.push_back(sphereShape);
 
-        btTransform sphereTransform;
-        sphereTransform.setIdentity();
-        sphereTransform.setOrigin(btVector3(m_ballStartingX, 4, m_ballStartingZ));
-
-        btScalar sphereMass(50.f);
-        btVector3 sphereLocalInertia(0, 0, 0);
-        sphereShape->calculateLocalInertia(sphereMass, sphereLocalInertia);
-
-        OgreMotionState *sphereMotionState = new OgreMotionState(sphereTransform, m_ball);
-
-        btRigidBody::btRigidBodyConstructionInfo sphereInfo(sphereMass,
-                                                            sphereMotionState,
-                                                            sphereShape,
-                                                            sphereLocalInertia);
-
-        m_ballBody = new btRigidBody(sphereInfo);
-        m_ballBody->setUserPointer(m_ball);
-        m_ballBody->setFriction(1.f);
-
-        m_engine->getDynamicsWorld()->addRigidBody(m_ballBody);
+        m_ballBody = attachBodyToPhysicsWorld(m_ball,
+                                              sphereShape,
+                                              50,
+                                              m_ballStartingX,
+                                              4,
+                                              m_ballStartingZ);
 
         // add ball to graphics world
         Ogre::SceneManager *sceneManager = m_engine->getOgreRoot()->
@@ -470,7 +424,6 @@ namespace TiltBall
 
         manual->end();
 
-        // add box to the physics world
         btCollisionShape *boxShape = new btBoxShape(btVector3(((p_x2 - p_x1) / 2),
                                                               ((p_y2 - p_y1) / 2),
                                                               ((p_z2 - p_z1) / 2)));
@@ -484,6 +437,45 @@ namespace TiltBall
                                          ((p_z2 + p_z1) / 2)));
 
         return WorldObject(manual, boxShape, boxTransform);
+    }
+
+    btRigidBody *Level::attachBodyToPhysicsWorld(Ogre::SceneNode *p_sceneNode,
+                                                 btCollisionShape *p_collisionShape,
+                                                 float p_mass,
+                                                 float p_originX,
+                                                 float p_originY,
+                                                 float p_originZ)
+    {
+        btTransform transform;
+        transform.setIdentity();
+        transform.setOrigin(btVector3(p_originX, p_originY, p_originZ));
+
+        btScalar mass(p_mass);
+        btVector3 localInertia(0, 0, 0);
+        if(p_mass > 0)
+            p_collisionShape->calculateLocalInertia(mass, localInertia);
+
+        OgreMotionState *motionState = new OgreMotionState(transform, p_sceneNode);
+
+        btRigidBody::btRigidBodyConstructionInfo info(mass,
+                                                      motionState,
+                                                      p_collisionShape,
+                                                      localInertia);
+
+        btRigidBody *body = new btRigidBody(info);
+
+        if(p_mass == 0)
+        {
+            body->setCollisionFlags(body->getCollisionFlags() |
+                                    btCollisionObject::CF_KINEMATIC_OBJECT);
+            body->setActivationState(DISABLE_DEACTIVATION);
+        }
+
+        body->setUserPointer(p_sceneNode);
+
+        m_engine->getDynamicsWorld()->addRigidBody(body);
+
+        return body;
     }
 
     void Level::load(std::string p_fileName)
