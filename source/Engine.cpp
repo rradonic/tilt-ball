@@ -263,7 +263,6 @@ namespace TiltBall
 
         int numManifolds = p_world->getDispatcher()->getNumManifolds();
 
-        bool click = false;
         for(int i = 0; i < numManifolds; i++)
         {
             btPersistentManifold *manifold =
@@ -277,17 +276,6 @@ namespace TiltBall
             Ogre::SceneNode *object1Node = static_cast<Ogre::SceneNode*>(object1->getUserPointer());
             Ogre::SceneNode *object2Node = static_cast<Ogre::SceneNode*>(object2->getUserPointer());
 
-            std::clog << object1Node->getName() << ' ' << object2Node->getName() << std::endl;
-
-            for(int j = 0; j < manifold->getNumContacts(); j++)
-            {
-                btManifoldPoint &point = manifold->getContactPoint(i);
-
-                if(point.getAppliedImpulse() > 600)
-                    click = true;
-            }
-
-
             if(object1Node->getName() == "target" ||
                object2Node->getName() == "target")
             {
@@ -296,8 +284,5 @@ namespace TiltBall
                 state->loadNextLevel();
             }
         }
-
-        if(click)
-            state->playClickSound();
     }
 }
