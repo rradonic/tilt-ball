@@ -268,19 +268,15 @@ namespace TiltBall
             btPersistentManifold* manifold =
                 p_world->getDispatcher()->getManifoldByIndexInternal(i);
 
-            btCollisionObject* object1 =
-                static_cast<btCollisionObject*>(manifold->getBody0());
-            btCollisionObject* object2 =
-                static_cast<btCollisionObject*>(manifold->getBody1());
+            btCollisionObject* object1 = static_cast<btCollisionObject*>(manifold->getBody0());
+            btCollisionObject* object2 = static_cast<btCollisionObject*>(manifold->getBody1());
 
             Ogre::SceneNode* object1Node = static_cast<Ogre::SceneNode*>(object1->getUserPointer());
             Ogre::SceneNode* object2Node = static_cast<Ogre::SceneNode*>(object2->getUserPointer());
 
-            if(object1Node->getName() == "target" ||
-               object2Node->getName() == "target")
+            if(object1Node->getName() == "target" || object2Node->getName() == "target")
             {
-                std::clog << "The level has been completed!" << std::endl;
-
+                std::clog << "Level complete!" << std::endl;
                 state->loadNextLevel();
             }
         }

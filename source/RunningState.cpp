@@ -133,10 +133,12 @@ namespace TiltBall
         btRigidBody* levelBody = m_currentLevel->getLevelBody();
         OgreMotionState* levelMotionState =
             dynamic_cast<OgreMotionState*>(levelBody->getMotionState());
+
         btTransform newBtLevelTransform = btTransform(btQuaternion(levelNode->getOrientation().x,
                                                                    levelNode->getOrientation().y,
                                                                    levelNode->getOrientation().z,
                                                                    levelNode->getOrientation().w));
+
         levelMotionState->kinematicSetPosition(newBtLevelTransform);
 
         // move the target
@@ -144,8 +146,7 @@ namespace TiltBall
         OgreMotionState* targetMotionState =
             dynamic_cast<OgreMotionState*>(targetBody->getMotionState());
 
-        Ogre::Vector3 targetWorldPosition =
-            targetNode->_getDerivedPosition();
+        Ogre::Vector3 targetWorldPosition = targetNode->_getDerivedPosition();
 
         btTransform newBtTargetTransform =
             btTransform(btQuaternion(targetNode->getOrientation().x,
