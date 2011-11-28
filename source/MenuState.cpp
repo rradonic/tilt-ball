@@ -22,14 +22,14 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace TiltBall
 {
-    MenuState::MenuState(Engine *p_engine) :
+    MenuState::MenuState(Engine* p_engine) :
         GameState(p_engine)
     {
         std::clog << "Entering menu state..." << std::endl;
 
-        CEGUI::WindowManager &windowManager = CEGUI::WindowManager::getSingleton();
+        CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton();
 
-        CEGUI::Window *layout = windowManager.loadWindowLayout("main-menu.layout");
+        CEGUI::Window* layout = windowManager.loadWindowLayout("main-menu.layout");
         CEGUI::System::getSingleton().setGUISheet(layout);
         unsigned int width, height, colorDepth;
         m_engine->getOgreRoot()->getRenderTarget("main_window")->getMetrics(width,
@@ -37,12 +37,12 @@ namespace TiltBall
                                                                             colorDepth);
         CEGUI::MouseCursor::getSingleton().show();
 
-        CEGUI::PushButton *resumeButton =
+        CEGUI::PushButton* resumeButton =
             (CEGUI::PushButton*)windowManager.getWindow("Menu/Resume");
         resumeButton->subscribeEvent(CEGUI::PushButton::EventClicked,
                                      CEGUI::SubscriberSlot(&MenuState::onResumeButtonClicked, this));
 
-        CEGUI::PushButton *quitButton = (CEGUI::PushButton*)windowManager.getWindow("Menu/Quit");
+        CEGUI::PushButton* quitButton = (CEGUI::PushButton*)windowManager.getWindow("Menu/Quit");
         quitButton->subscribeEvent(CEGUI::PushButton::EventClicked,
                                    CEGUI::SubscriberSlot(&MenuState::onQuitButtonClicked, this));
     }
@@ -64,15 +64,15 @@ namespace TiltBall
     {
     }
 
-    bool MenuState::update(const Ogre::FrameEvent &p_event)
+    bool MenuState::update(const Ogre::FrameEvent& p_event)
     {
-        InputSystem *inputSystem = m_engine->getInputSystem();
+        InputSystem* inputSystem = m_engine->getInputSystem();
         inputSystem->capture();
 
         return true;
     }
 
-    bool MenuState::mouseMoved(const OIS::MouseEvent &p_evt)
+    bool MenuState::mouseMoved(const OIS::MouseEvent& p_evt)
     {
         CEGUI::System::getSingleton().injectMouseMove(p_evt.state.X.rel, p_evt.state.Y.rel);
         if (p_evt.state.Z.rel)
@@ -81,19 +81,19 @@ namespace TiltBall
         return true;
     }
 
-    bool MenuState::mousePressed(const OIS::MouseEvent &p_evt, OIS::MouseButtonID p_buttonId)
+    bool MenuState::mousePressed(const OIS::MouseEvent& p_evt, OIS::MouseButtonID p_buttonId)
     {
         CEGUI::System::getSingleton().injectMouseButtonDown(convertMouseButton(p_buttonId));
         return true;
     }
 
-    bool MenuState::mouseReleased(const OIS::MouseEvent &p_evt, OIS::MouseButtonID p_buttonId)
+    bool MenuState::mouseReleased(const OIS::MouseEvent& p_evt, OIS::MouseButtonID p_buttonId)
     {
         CEGUI::System::getSingleton().injectMouseButtonUp(convertMouseButton(p_buttonId));
         return true;
     }
 
-    bool MenuState::keyPressed(const OIS::KeyEvent &p_evt)
+    bool MenuState::keyPressed(const OIS::KeyEvent& p_evt)
     {
          CEGUI::System::getSingleton().injectKeyDown(p_evt.key);
          CEGUI::System::getSingleton().injectChar(p_evt.text);
@@ -104,7 +104,7 @@ namespace TiltBall
         return true;
     }
 
-    bool MenuState::keyReleased(const OIS::KeyEvent &p_evt)
+    bool MenuState::keyReleased(const OIS::KeyEvent& p_evt)
     {
         return true;
     }
@@ -127,14 +127,14 @@ namespace TiltBall
         }
     }
 
-    bool MenuState::onResumeButtonClicked(const CEGUI::EventArgs &e)
+    bool MenuState::onResumeButtonClicked(const CEGUI::EventArgs& e)
     {
         std::clog << "Resume clicked!" << std::endl;
         m_engine->requestPop();
         return true;
     }
 
-    bool MenuState::onQuitButtonClicked(const CEGUI::EventArgs &e)
+    bool MenuState::onQuitButtonClicked(const CEGUI::EventArgs& e)
     {
         std::clog << "Quit clicked!" << std::endl;
         m_engine->requestQuit();

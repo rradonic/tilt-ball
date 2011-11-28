@@ -31,33 +31,33 @@ namespace TiltBall
     class IntroState: public GameState
     {
     public:
-        explicit IntroState(Engine *p_engine);
+        explicit IntroState(Engine* p_engine);
 
         void pause();
 
         void resume();
 
-        bool update(const Ogre::FrameEvent &p_event);
+        bool update(const Ogre::FrameEvent& p_event);
 
-        bool mouseMoved(const OIS::MouseEvent &evt);
+        bool mouseMoved(const OIS::MouseEvent& evt);
 
-        bool mousePressed(const OIS::MouseEvent &evt,
+        bool mousePressed(const OIS::MouseEvent& evt,
                           OIS::MouseButtonID);
 
-        bool mouseReleased(const OIS::MouseEvent &evt,
+        bool mouseReleased(const OIS::MouseEvent& evt,
                            OIS::MouseButtonID);
 
-        bool keyPressed(const OIS::KeyEvent &evt);
+        bool keyPressed(const OIS::KeyEvent& evt);
 
-        bool keyReleased(const OIS::KeyEvent &evt);
+        bool keyReleased(const OIS::KeyEvent& evt);
 
     private:
         unsigned long m_totalMilliseconds;
         unsigned long m_elapsedMilliseconds;
         Ogre::Timer m_timer;
 
-        Ogre::TextureUnitState *m_textureUnitState;
-        Ogre::Overlay *m_fadeOverlay;
+        Ogre::TextureUnitState* m_textureUnitState;
+        Ogre::Overlay* m_fadeOverlay;
         float m_alpha;
     };
 }

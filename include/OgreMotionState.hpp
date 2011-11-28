@@ -26,19 +26,19 @@ namespace TiltBall
     class OgreMotionState : public btMotionState
     {
     public:
-        OgreMotionState(btTransform &p_initialpos,
-                        Ogre::SceneNode *p_node);
+        OgreMotionState(btTransform& p_initialpos,
+                        Ogre::SceneNode* p_node);
 
-        void setNode(Ogre::SceneNode *p_node);
+        void setNode(Ogre::SceneNode* p_node);
 
-        void getWorldTransform(btTransform &p_worldTrans) const;
+        void getWorldTransform(btTransform& p_worldTrans) const;
 
-        void setWorldTransform(const btTransform &p_worldTrans);
+        void setWorldTransform(const btTransform& p_worldTrans);
 
-        void kinematicSetPosition(btTransform &p_worldTrans);
+        void kinematicSetPosition(btTransform& p_worldTrans);
 
     protected:
-        Ogre::SceneNode *m_node;
+        Ogre::SceneNode* m_node;
         btTransform m_position;
     };
 }
