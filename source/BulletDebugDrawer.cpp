@@ -68,16 +68,15 @@ namespace TiltBall
         Ogre::SceneManager* sceneManager =
             m_engine->getOgreRoot()->getSceneManager("main_scene_manager");
 
-        std::vector<Ogre::SceneNode*>::iterator iter;
-        for(iter = m_lines.begin(); iter < m_lines.end(); iter++)
+        for(auto it = m_lines.begin(); it < m_lines.end(); it++)
         {
             Ogre::ManualObject* manualObject =
-                dynamic_cast<Ogre::ManualObject*>((*iter)->getAttachedObject(0));
+                dynamic_cast<Ogre::ManualObject*>((*it)->getAttachedObject(0));
 
-            (*iter)->detachObject(manualObject);
+            (*it)->detachObject(manualObject);
             sceneManager->destroyManualObject(manualObject);
 
-            sceneManager->getRootSceneNode()->removeAndDestroyChild((*iter)->getName());
+            sceneManager->getRootSceneNode()->removeAndDestroyChild((*it)->getName());
         }
 
         m_lines.clear();
