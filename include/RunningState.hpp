@@ -61,6 +61,8 @@ namespace TiltBall
 
         void loadNextLevel();
 
+        void reloadCurrentLevel();
+
         void playClickSound();
 
     private:

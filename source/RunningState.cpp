@@ -123,6 +123,7 @@ namespace TiltBall
 
         Ogre::SceneNode* levelNode = m_currentLevel->getLevelNode();
         Ogre::SceneNode* targetNode = m_currentLevel->getTargetNode();
+        Ogre::SceneNode* ballNode = m_currentLevel->getBallNode();
 
         const OIS::MouseState& mouseState = inputSystem->getMouseState();
 
@@ -158,6 +159,14 @@ namespace TiltBall
                                   targetWorldPosition.z));
 
         targetMotionState->kinematicSetPosition(newBtTargetTransform);
+
+        // check whether the ball fell off the level
+        btRigidBody *ballBody = m_currentLevel->getBallBody();
+
+        Ogre::Vector3 ballWorldPosition = ballNode->_getDerivedPosition();
+
+        if(ballWorldPosition.y < -100)
+            reloadCurrentLevel();
 
         return true;
     }
@@ -207,6 +216,15 @@ namespace TiltBall
         delete m_currentLevel;
 
         m_currentLevel = new Level(m_engine, nextLevelFileName);
+    }
+
+    void RunningState::reloadCurrentLevel()
+    {
+        std::string fileName = m_currentLevel->getFileName();
+
+        delete m_currentLevel;
+
+        m_currentLevel = new Level(m_engine, fileName);
     }
 
     void RunningState::playClickSound()
