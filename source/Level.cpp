@@ -585,6 +585,11 @@ namespace TiltBall
         return m_target;
     }
 
+    std::string Level::getFileName()
+    {
+        return m_fileName;
+    }
+
     std::string Level::getNextLevelFileName()
     {
         boost::regex regex("(.*)level([[:digit:]]+)\\.lvl");

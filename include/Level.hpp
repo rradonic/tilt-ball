@@ -54,6 +54,8 @@ namespace TiltBall
 
         Ogre::SceneNode* getTargetNode();
 
+        std::string getFileName();
+
         std::string getNextLevelFileName();
 
     private:
