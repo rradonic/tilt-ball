@@ -69,9 +69,7 @@ namespace TiltBall
         btCompoundShape* compoundShape = new btCompoundShape();
 
         std::vector<WorldObject> bottomSurface = buildBottomSurface("Materials/Level1Floor");
-        for(std::vector<WorldObject>::iterator it = bottomSurface.begin();
-            it < bottomSurface.end();
-            it++)
+        for(auto it = bottomSurface.begin(); it < bottomSurface.end(); it++)
         {
             m_level->attachObject((*it).getMovableObject());
             compoundShape->addChildShape((*it).getTransform(),
@@ -79,9 +77,7 @@ namespace TiltBall
         }
 
         std::vector<WorldObject> walls = buildWalls("Materials/Level1Wall");
-        for(std::vector<WorldObject>::iterator it = walls.begin();
-            it < walls.end();
-            it++)
+        for(auto it = walls.begin(); it < walls.end(); it++)
         {
             m_level->attachObject((*it).getMovableObject());
             compoundShape->addChildShape((*it).getTransform(),
@@ -161,7 +157,7 @@ namespace TiltBall
 
         //remove the rigidbodies from the dynamics world and delete them
         btDiscreteDynamicsWorld* dynamicsWorld = m_engine->getDynamicsWorld();
-        for(int i = dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
+        for(auto i = dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
         {
             btCollisionObject* object = dynamicsWorld->getCollisionObjectArray()[i];
             btRigidBody* body = btRigidBody::upcast(object);
@@ -179,12 +175,8 @@ namespace TiltBall
             delete object;
         }
 
-        for(std::vector<btCollisionShape*>::iterator it = m_collisionShapes.begin();
-            it < m_collisionShapes.end();
-            it++)
-        {
+        for(auto it = m_collisionShapes.begin(); it < m_collisionShapes.end(); it++)
             delete (*it);
-        }
 
         m_collisionShapes.clear();
     }
@@ -242,9 +234,8 @@ namespace TiltBall
 
         std::vector<WorldObject> walls;
 
-        std::vector<WallCoordinates>::iterator it;
-        int wallNumber;
-        for(it = m_walls.begin(), wallNumber = 0; it < m_walls.end(); it++, wallNumber++)
+        int wallNumber = 0;
+        for(auto it = m_walls.begin(); it < m_walls.end(); it++, wallNumber++)
         {
             std::ostringstream wallNameStream;
             wallNameStream << "wall" << wallNumber;

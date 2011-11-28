@@ -263,7 +263,7 @@ namespace TiltBall
 
         int numManifolds = p_world->getDispatcher()->getNumManifolds();
 
-        for(int i = 0; i < numManifolds; i++)
+        for(auto i = 0; i < numManifolds; i++)
         {
             btPersistentManifold* manifold =
                 p_world->getDispatcher()->getManifoldByIndexInternal(i);
