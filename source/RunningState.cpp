@@ -161,8 +161,6 @@ namespace TiltBall
         targetMotionState->kinematicSetPosition(newBtTargetTransform);
 
         // check whether the ball fell off the level
-        btRigidBody *ballBody = m_currentLevel->getBallBody();
-
         Ogre::Vector3 ballWorldPosition = ballNode->_getDerivedPosition();
 
         if(ballWorldPosition.y < -100)
