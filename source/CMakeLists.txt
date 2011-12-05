@@ -3,6 +3,7 @@ include_directories(/usr/include/OGRE)
 include_directories(/usr/include/bullet)
 
 add_executable(tilt_ball
+  AudioSystem.cpp
   BulletDebugDrawer.cpp
   Engine.cpp
   GameState.cpp
