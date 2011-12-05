@@ -75,6 +75,11 @@ namespace TiltBall
         alSourcei(m_clickSoundSource, AL_BUFFER, m_clickSoundBuffer);
     }
 
+    void AudioSystem::playClickSound()
+    {
+        alSourcePlay(m_clickSoundSource);
+    }
+
     AudioSystem::~AudioSystem()
     {
         alDeleteBuffers(1, &m_musicBuffer);

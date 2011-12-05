@@ -37,6 +37,8 @@ namespace TiltBall
 
         ~AudioSystem();
 
+        void playClickSound();
+
     private:
         std::vector<char> m_vorbisBuffer;
 

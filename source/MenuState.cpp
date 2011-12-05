@@ -19,6 +19,7 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "MenuState.hpp"
+#include "AudioSystem.hpp"
 
 namespace TiltBall
 {
@@ -130,6 +131,7 @@ namespace TiltBall
     bool MenuState::onResumeButtonClicked(const CEGUI::EventArgs& e)
     {
         std::clog << "Resume clicked!" << std::endl;
+        m_engine->getAudioSystem()->playClickSound();
         m_engine->requestPop();
         return true;
     }
@@ -137,6 +139,7 @@ namespace TiltBall
     bool MenuState::onQuitButtonClicked(const CEGUI::EventArgs& e)
     {
         std::clog << "Quit clicked!" << std::endl;
+        m_engine->getAudioSystem()->playClickSound();
         m_engine->requestQuit();
         return true;
     }
