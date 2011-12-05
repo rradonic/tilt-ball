@@ -34,6 +34,7 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace TiltBall
 {
+    class AudioSystem;
     class BulletDebugDrawer;
     class GameState;
 
@@ -88,6 +89,7 @@ namespace TiltBall
         BulletDebugDrawer* m_debugDrawer;
 
         InputSystem* m_inputSystem;
+        AudioSystem* m_audioSystem;
 
         CEGUI::OgreRenderer* m_ceguiRenderer;
 

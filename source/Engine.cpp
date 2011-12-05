@@ -19,6 +19,7 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "Engine.hpp"
+#include "AudioSystem.hpp"
 #include "BulletDebugDrawer.hpp"
 #include "RunningState.hpp"
 
@@ -39,10 +40,12 @@ namespace TiltBall
                                                     m_collisionConfiguration)),
 
         m_inputSystem(new InputSystem(getOgreRoot())),
+        m_audioSystem(new AudioSystem()),
         m_ceguiRenderer(&CEGUI::OgreRenderer::bootstrapSystem(*(getOgreRoot()->
                                                                 getRenderTarget("main_window")))),
         m_timeSinceLastFrame(0),
-        m_requestPop(false)
+        m_requestPop(false),
+        m_requestQuit(false)
     {
         std::clog << "Setting up resource manager..." << std::endl;
         Ogre::ResourceGroupManager* resourceGroupManager =
@@ -142,6 +145,7 @@ namespace TiltBall
         std::clog << "Engine destructor" << std::endl;
 
         CEGUI::OgreRenderer::destroySystem();
+        delete m_audioSystem;
         delete m_inputSystem;
 
         delete m_dynamicsWorld;
