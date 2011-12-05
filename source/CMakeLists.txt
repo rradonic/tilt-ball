@@ -1,6 +1,6 @@
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(/usr/include/OGRE)
-include_directories(/usr/local/include/bullet)
+include_directories(/usr/include/bullet)
 
 add_executable(tilt_ball
   BulletDebugDrawer.cpp
