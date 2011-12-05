@@ -59,6 +59,8 @@ namespace TiltBall
 
         InputSystem* getInputSystem();
 
+        AudioSystem* getAudioSystem();
+
         btDiscreteDynamicsWorld* getDynamicsWorld();
 
         BulletDebugDrawer* getDebugDrawer();

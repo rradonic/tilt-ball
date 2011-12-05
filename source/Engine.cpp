@@ -247,6 +247,11 @@ namespace TiltBall
         return m_inputSystem;
     }
 
+    AudioSystem* Engine::getAudioSystem()
+    {
+        return m_audioSystem;
+    }
+
     float Engine::getTimeSinceLastFrame()
     {
         return m_timeSinceLastFrame;
