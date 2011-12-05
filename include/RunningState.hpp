@@ -24,8 +24,6 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 #include "Engine.hpp"
 #include "GameState.hpp"
 
-#include <AL/al.h>
-
 namespace TiltBall
 {
     class Level;
@@ -63,19 +61,10 @@ namespace TiltBall
 
         void reloadCurrentLevel();
 
-        void playClickSound();
-
     private:
         // heap object because we will want to allocate and destroy Level objects as we go from
         // level to level in the game
         Level* m_currentLevel;
-
-        std::vector<char> m_vorbisBuffer;
-
-        ALuint m_musicBuffer;
-        ALuint m_musicSource;
-        ALuint m_clickSoundBuffer;
-        ALuint m_clickSoundSource;
     };
 }
 
