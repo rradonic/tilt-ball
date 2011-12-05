@@ -455,6 +455,9 @@ namespace TiltBall
 
         btRigidBody* body = new btRigidBody(info);
 
+        body->setRestitution(0);
+        body->setFriction(1);
+
         if(p_mass == 0)
         {
             body->setCollisionFlags(body->getCollisionFlags() |
