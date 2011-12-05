@@ -52,23 +52,23 @@ namespace TiltBall
 
         resourceGroupManager->addResourceLocation("../resources/cegui/imagesets",
                                                   "FileSystem", "Imagesets", true);
-        resourceGroupManager->addResourceLocation("/usr/local/share/CEGUI/imagesets",
+        resourceGroupManager->addResourceLocation("/usr/share/CEGUI/imagesets",
                                                   "FileSystem", "Imagesets", true);
 
-        resourceGroupManager->addResourceLocation("/usr/local/share/CEGUI/fonts",
+        resourceGroupManager->addResourceLocation("/usr/share/CEGUI/fonts",
                                                   "FileSystem", "Fonts", true);
 
         resourceGroupManager->addResourceLocation("../resources/cegui/schemes",
                                                   "FileSystem", "Schemes", true);
-        resourceGroupManager->addResourceLocation("/usr/local/share/CEGUI/schemes",
+        resourceGroupManager->addResourceLocation("/usr/share/CEGUI/schemes",
                                                   "FileSystem", "Schemes", true);
 
-        resourceGroupManager->addResourceLocation("/usr/local/share/CEGUI/looknfeel",
+        resourceGroupManager->addResourceLocation("/usr/share/CEGUI/looknfeel",
                                                   "FileSystem", "LookAndFeel", true);
 
         resourceGroupManager->addResourceLocation("../resources/cegui/layouts",
                                                   "FileSystem", "Layouts", true);
-        resourceGroupManager->addResourceLocation("/usr/local/share/CEGUI/layouts",
+        resourceGroupManager->addResourceLocation("/usr/share/CEGUI/layouts",
                                                   "FileSystem", "Layouts", true);
 
         CEGUI::Imageset::setDefaultResourceGroup("Imagesets");
