@@ -64,9 +64,6 @@ namespace TiltBall
 
         void load(std::string p_levelFileName);
 
-        bool getNonEmptyLine(std::ifstream& p_file,
-                             std::istringstream& p_lineStream);
-
         WorldObject buildBox(std::string p_name,
                              std::string p_material,
                              float p_x1,

@@ -27,7 +27,7 @@ namespace TiltBall
 {
     RunningState::RunningState(Engine* p_engine) :
         GameState(p_engine),
-        m_currentLevel(new Level(p_engine, "../resources/levels/level1.lvl"))
+        m_currentLevel(new Level(p_engine, "../resources/levels/level1.json"))
     {
         std::clog << "Entering running state..." << std::endl;
         Ogre::SceneManager* sceneManager = m_engine->getOgreRoot()->
