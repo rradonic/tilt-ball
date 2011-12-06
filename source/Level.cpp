@@ -28,6 +28,8 @@
 #include <cmath>
 #include <vector>
 #include <boost/regex.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 namespace TiltBall
 {
@@ -476,86 +478,44 @@ namespace TiltBall
     {
         std::clog << "Loading level..." << std::endl;
 
-        std::ifstream file(p_fileName.c_str());
-        std::istringstream lineStream;
-        std::string throwAway;
+        boost::property_tree::ptree pt;
+        read_json(p_fileName, pt);
 
-        getNonEmptyLine(file, lineStream);
-        std::getline(lineStream, throwAway, ' '); lineStream >> m_name;
+        m_name = pt.get<std::string>("name");
 
-        std::clog << "Level name:" << std::endl;
-        std::clog << m_name << std::endl;
+        std::clog << "Level name: " << m_name << std::endl;
 
-        getNonEmptyLine(file, lineStream);
-        float levelXSpan, levelZSpan;
-        std::getline(lineStream, throwAway, ' '); lineStream >> levelXSpan;
-        std::getline(lineStream, throwAway, 'x'); lineStream >> levelZSpan;
-
-        m_levelXMin = -(levelXSpan / 2);
-        m_levelXMax = levelXSpan / 2;
-        m_levelZMin = -(levelZSpan / 2);
-        m_levelZMax = levelZSpan / 2;
+        m_levelXMin = -(pt.get<float>("dimensions.x") / 2);
+        m_levelXMax = pt.get<float>("dimensions.x") / 2;
+        m_levelZMin = -(pt.get<float>("dimensions.z") / 2);
+        m_levelZMax = pt.get<float>("dimensions.z") / 2;
         m_levelYMin = -1;
         m_levelYMax = 1;
 
-        std::clog << "Level dimensions:" << levelXSpan << 'x' << levelZSpan << std::endl;
+        std::clog << "Level dimensions: " <<
+            pt.get<float>("dimensions.x") << 'x' <<
+            pt.get<float>("dimensions.z") << std::endl;
 
-        getNonEmptyLine(file, lineStream);
-        std::getline(lineStream, throwAway, '('); lineStream >> m_cameraX;
-        std::getline(lineStream, throwAway, ','); lineStream >> m_cameraY;
-        std::getline(lineStream, throwAway, ','); lineStream >> m_cameraZ;
+        m_cameraX = pt.get<float>("camera.x");
+        m_cameraY = pt.get<float>("camera.y");
+        m_cameraZ = pt.get<float>("camera.z");
 
-        getNonEmptyLine(file, lineStream);
-        std::getline(lineStream, throwAway, '('); lineStream >> m_targetX;
-        std::getline(lineStream, throwAway, ','); lineStream >> m_targetZ;
+        m_targetX = pt.get<float>("target.x");
+        m_targetZ = pt.get<float>("target.z");
 
         std::clog << "Target coordinates: " << m_targetX << ' ' << m_targetZ << std::endl;
 
-        getNonEmptyLine(file, lineStream);
-        std::getline(lineStream, throwAway, '('); lineStream >> m_ballStartingX;
-        std::getline(lineStream, throwAway, ','); lineStream >> m_ballStartingZ;
+        m_ballStartingX = pt.get<float>("ball.x");
+        m_ballStartingZ = pt.get<float>("ball.z");
 
         std::clog << "Ball coordinates: " << m_ballStartingX << ' ' << m_ballStartingZ << std::endl;
 
         std::clog << "Loading walls..." << std::endl;
-        // the rest of the file defines the walls
-        while (true)
-        {
-            if (!getNonEmptyLine(file, lineStream))
-                break;
-
-            int wallBeginX, wallBeginZ, wallEndX, wallEndZ;
-
-            std::getline(lineStream, throwAway, '('); lineStream >> wallBeginX;
-            std::getline(lineStream, throwAway, ','); lineStream >> wallBeginZ;
-            std::getline(lineStream, throwAway, '('); lineStream >> wallEndX;
-            std::getline(lineStream, throwAway, ','); lineStream >> wallEndZ;
-
-            std::clog << "Wall loaded:" << std::endl;
-            std::clog << wallBeginX << std::endl;
-            std::clog << wallBeginZ << std::endl;
-            std::clog << wallEndX << std::endl;
-            std::clog << wallEndZ << std::endl;
-
-            m_walls.push_back(WallCoordinates(wallBeginX, wallBeginZ, wallEndX, wallEndZ));
-        }
-    }
-
-    bool Level::getNonEmptyLine(std::ifstream& p_file, std::istringstream& p_lineStream)
-    {
-        std::string line;
-        // skip blank lines
-        do
-        {
-            std::getline(p_file, line);
-            if (p_file.eof())
-                return false;
-        } while (line.length() == 0);
-
-        p_lineStream.clear();
-        p_lineStream.str(line);
-
-        return true;
+        for(auto it = pt.get_child("walls").begin(); it != pt.get_child("walls").end(); it++)
+            m_walls.push_back(WallCoordinates((*it).second.get<float>("begin.x"),
+                                              (*it).second.get<float>("begin.z"),
+                                              (*it).second.get<float>("end.x"),
+                                              (*it).second.get<float>("end.z")));
     }
 
     btRigidBody* Level::getLevelBody()
@@ -595,14 +555,14 @@ namespace TiltBall
 
     std::string Level::getNextLevelFileName()
     {
-        boost::regex regex("(.*)level([[:digit:]]+)\\.lvl");
+        boost::regex regex("(.*)level([[:digit:]]+)\\.json");
         boost::smatch matches;
         regex_search(m_fileName, matches, regex);
 
         int levelNumber = atoi(matches[2].str().c_str());
 
         std::stringstream stream;
-        stream << matches[1] << "level" << levelNumber + 1 << ".lvl";
+        stream << matches[1] << "level" << levelNumber + 1 << ".json";
 
         return stream.str();
     }
