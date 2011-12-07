@@ -73,8 +73,8 @@ namespace TiltBall
         const OIS::MouseState& mouseState = inputSystem->getMouseState();
 
         // move the level
-        levelNode->roll(Ogre::Degree(-(float)mouseState.X.rel / 7), Ogre::Node::TS_LOCAL);
-        levelNode->pitch(Ogre::Degree((float)mouseState.Y.rel / 7), Ogre::Node::TS_WORLD);
+        levelNode->roll(Ogre::Degree(-(float)mouseState.X.rel / 20), Ogre::Node::TS_LOCAL);
+        levelNode->pitch(Ogre::Degree((float)mouseState.Y.rel / 20), Ogre::Node::TS_WORLD);
 
         btRigidBody* levelBody = m_currentLevel->getLevelBody();
         OgreMotionState* levelMotionState =
