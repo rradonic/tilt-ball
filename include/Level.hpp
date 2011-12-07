@@ -97,8 +97,8 @@ namespace TiltBall
         std::vector<WallCoordinates> m_walls;
 
         static constexpr float WALL_HEIGHT = 2.0;
-        static constexpr float WALL_HALF_THICKNESS = 0.6;
-        static constexpr float TARGET_HALF_SIZE = 1.3;
+        static constexpr float WALL_HALF_THICKNESS = 0.5;
+        static constexpr float TARGET_HALF_SIZE = 1.5;
         static constexpr float TARGET_THICKNESS = 0.01;
 
         float m_extrusion;
