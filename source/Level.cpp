@@ -38,6 +38,7 @@ namespace TiltBall
         m_ball(initSceneNode(p_engine, "ball")),
         m_target(initSceneNode(p_engine, "target")),
         m_engine(p_engine),
+        m_extrusion(0.0002),
         m_fileName(p_fileName)
     {
         load(p_fileName);
@@ -247,21 +248,20 @@ namespace TiltBall
             int p_pointEndX = (*it).getEndX();
             int p_pointEndZ = (*it).getEndZ();
 
-            static float extrusion = 0.001;
             if (p_pointBeginX > p_pointEndX)
                 std::swap(p_pointBeginX, p_pointEndX);
             if (p_pointBeginZ > p_pointEndZ)
                 std::swap(p_pointBeginZ, p_pointEndZ);
 
-            float wallX1 = m_levelXMin + p_pointBeginX - Level::WALL_HALF_THICKNESS - extrusion;
-            float wallX2 = m_levelXMin + p_pointEndX + Level::WALL_HALF_THICKNESS + extrusion;
-            float wallY1 = m_levelYMax - extrusion;
-            float wallY2 = m_levelYMax + Level::WALL_HEIGHT + extrusion;
-            float wallZ1 = m_levelZMin + p_pointBeginZ - Level::WALL_HALF_THICKNESS - extrusion;
-            float wallZ2 = m_levelZMin + p_pointEndZ + Level::WALL_HALF_THICKNESS + extrusion;
+            float wallX1 = m_levelXMin + p_pointBeginX - Level::WALL_HALF_THICKNESS - m_extrusion;
+            float wallX2 = m_levelXMin + p_pointEndX + Level::WALL_HALF_THICKNESS + m_extrusion;
+            float wallY1 = m_levelYMax - m_extrusion;
+            float wallY2 = m_levelYMax + Level::WALL_HEIGHT + m_extrusion;
+            float wallZ1 = m_levelZMin + p_pointBeginZ - Level::WALL_HALF_THICKNESS - m_extrusion;
+            float wallZ2 = m_levelZMin + p_pointEndZ + Level::WALL_HALF_THICKNESS + m_extrusion;
 
             // slight extrusion prevents depth fighting of overlapping wall ends
-            extrusion += 0.001;
+            m_extrusion += 0.0002;
 
             walls.push_back(buildBox(wallNameStream.str(),
                                      p_material,
