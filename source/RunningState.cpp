@@ -25,9 +25,9 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace TiltBall
 {
-    RunningState::RunningState(Engine* p_engine) :
+    RunningState::RunningState(Engine* p_engine, std::string p_levelFile) :
         GameState(p_engine),
-        m_currentLevel(new Level(p_engine, "../resources/levels/level1.json"))
+        m_currentLevel(new Level(p_engine, p_levelFile))
     {
         std::clog << "Entering running state..." << std::endl;
         Ogre::SceneManager* sceneManager = m_engine->getOgreRoot()->

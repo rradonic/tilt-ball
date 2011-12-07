@@ -24,8 +24,9 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 #include "RunningState.hpp"
 
 #include <fstream>
+#include <string>
 
-int main()
+int main(int argc, char *argv[])
 {
     try
     {
@@ -33,8 +34,14 @@ int main()
 
         std::streambuf* old = std::clog.rdbuf(log.rdbuf());
 
+        std::string levelFile;
+        if(argc == 2)
+            levelFile = argv[1];
+        else
+            levelFile = "../resources/levels/level1.json";
+
         TiltBall::Engine engine;
-        engine.pushState(new TiltBall::RunningState(&engine));
+        engine.pushState(new TiltBall::RunningState(&engine, levelFile));
         engine.pushState(new TiltBall::MenuState(&engine));
         engine.pushState(new TiltBall::IntroState(&engine));
         engine.mainLoop();
