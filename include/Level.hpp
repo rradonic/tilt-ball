@@ -101,6 +101,8 @@ namespace TiltBall
         static constexpr float TARGET_HALF_SIZE = 1.3;
         static constexpr float TARGET_THICKNESS = 0.01;
 
+        float m_extrusion;
+
         // level dimensions in world coordinates
         float m_levelYMin;
         float m_levelYMax;
