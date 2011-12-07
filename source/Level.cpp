@@ -38,7 +38,7 @@ namespace TiltBall
         m_ball(initSceneNode(p_engine, "ball")),
         m_target(initSceneNode(p_engine, "target")),
         m_engine(p_engine),
-        m_extrusion(0.0002),
+        m_extrusion(0.0003),
         m_fileName(p_fileName)
     {
         load(p_fileName);
@@ -261,7 +261,7 @@ namespace TiltBall
             float wallZ2 = m_levelZMin + p_pointEndZ + Level::WALL_HALF_THICKNESS + m_extrusion;
 
             // slight extrusion prevents depth fighting of overlapping wall ends
-            m_extrusion += 0.0002;
+            m_extrusion += 0.0003;
 
             walls.push_back(buildBox(wallNameStream.str(),
                                      p_material,
