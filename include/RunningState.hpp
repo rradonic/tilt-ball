@@ -31,7 +31,7 @@ namespace TiltBall
     class RunningState: public GameState
     {
     public:
-        explicit RunningState(Engine* p_engine);
+        RunningState(Engine* p_engine, std::string p_levelFile);
 
         RunningState(const RunningState& p_other) = delete;
 
@@ -47,11 +47,9 @@ namespace TiltBall
 
         bool mouseMoved(const OIS::MouseEvent& evt);
 
-        bool mousePressed(const OIS::MouseEvent& evt,
-                          OIS::MouseButtonID);
+        bool mousePressed(const OIS::MouseEvent& evt, OIS::MouseButtonID);
 
-        bool mouseReleased(const OIS::MouseEvent& evt,
-                           OIS::MouseButtonID);
+        bool mouseReleased(const OIS::MouseEvent& evt, OIS::MouseButtonID);
 
         bool keyPressed(const OIS::KeyEvent& evt);
 
