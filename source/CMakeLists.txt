@@ -2,7 +2,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(/usr/include/OGRE)
 include_directories(/usr/include/bullet)
 
-add_executable(tilt_ball
+add_executable(tilt-ball
   AudioSystem.cpp
   BulletDebugDrawer.cpp
   Engine.cpp
@@ -17,7 +17,7 @@ add_executable(tilt_ball
   WallCoordinates.cpp
   WorldObject.cpp)
 
-target_link_libraries(tilt_ball
+target_link_libraries(tilt-ball
   LinearMath
   BulletCollision
   BulletDynamics
@@ -31,3 +31,6 @@ target_link_libraries(tilt_ball
   alut
   vorbis
   vorbisfile)
+
+install(TARGETS tilt-ball
+  RUNTIME DESTINATION bin)
