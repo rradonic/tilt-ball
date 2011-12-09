@@ -46,6 +46,7 @@ with ./source/tilt-ball
 Dependencies
 ------------
 
+* CMake (build system)
 * Bullet (physics)
 * Ogre (3D Rendering)
 * OIS (input)
