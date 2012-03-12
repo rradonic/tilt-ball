@@ -24,9 +24,9 @@ packaged both in a ppa on Launchpad:
 
 https://launchpad.net/~ranko-radonic/+archive/libs
 
-Add this ppa to your apt-get configuration.
+Add that ppa to your apt-get configuration.
 
-    sudo add-apt-repository ppa:ranko-radonic/tilt-ball
+    sudo add-apt-repository ppa:ranko-radonic/libs
     sudo apt-get update
 
 Fetch the game.
