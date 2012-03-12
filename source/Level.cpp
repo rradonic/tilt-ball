@@ -458,7 +458,7 @@ namespace TiltBall
         btRigidBody* body = new btRigidBody(info);
 
         body->setRestitution(0);
-        body->setFriction(0.5);
+        body->setFriction(0.2);
 
         if(p_mass == 0)
         {
