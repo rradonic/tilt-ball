@@ -34,12 +34,7 @@ namespace TiltBall
             getSceneManager("main_scene_manager");
 
         std::clog << "Setting up lighting..." << std::endl;
-        sceneManager->setAmbientLight(Ogre::ColourValue(0.8, 0.8, 0.8));
-        Ogre::Light* light = sceneManager->createLight("main_light");
-        light->setType(Ogre::Light::LT_POINT);
-        light->setPosition(0, 20, 0);
-        light->setDiffuseColour(Ogre::ColourValue(0.1, 0.1, 0.1));
-        light->setSpecularColour(Ogre::ColourValue(0.1, 0.1, 0.1));
+        sceneManager->setAmbientLight(Ogre::ColourValue(0.7, 0.7, 0.7));
     }
 
     RunningState::~RunningState()

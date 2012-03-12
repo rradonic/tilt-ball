@@ -134,8 +134,6 @@ namespace TiltBall
 
         std::clog << "Creating scene manager..." << std::endl;
         ogreRoot->createSceneManager(Ogre::ST_GENERIC, "main_scene_manager");
-        ogreRoot->getSceneManager("main_scene_manager")->
-            setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
 
         return ogreRoot;
     }
