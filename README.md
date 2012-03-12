@@ -29,6 +29,10 @@ Add that ppa to your apt-get configuration.
     sudo add-apt-repository ppa:ranko-radonic/libs
     sudo apt-get update
 
+Install the libaries that the game needs.
+
+    sudo apt-get install cmake libbullet-dev libogre-dev libois-dev libcegui-dev libboost-regex-dev libopenal-dev libalut-dev libvorbis-dev libvorbisfile3
+
 Fetch the game.
 
     git clone git://github.com/rradonic/tilt-ball.git
@@ -56,5 +60,6 @@ Dependencies
 * ALUT (audio)
 * Vorbis (Ogg Vorbis decoding)
 * Vorbisfile (Ogg Vorbis decoding)
+
 
 TODO: Linux/Windows/MacOSX installation instructions
