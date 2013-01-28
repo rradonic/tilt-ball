@@ -55,23 +55,23 @@ namespace TiltBall
 
         resourceGroupManager->addResourceLocation("../resources/cegui/imagesets",
                                                   "FileSystem", "Imagesets", true);
-        resourceGroupManager->addResourceLocation("/usr/share/CEGUI/imagesets",
+        resourceGroupManager->addResourceLocation("../resources/datafiles/imagesets",
                                                   "FileSystem", "Imagesets", true);
 
-        resourceGroupManager->addResourceLocation("/usr/share/CEGUI/fonts",
+        resourceGroupManager->addResourceLocation("../resources/datafiles/fonts",
                                                   "FileSystem", "Fonts", true);
 
         resourceGroupManager->addResourceLocation("../resources/cegui/schemes",
                                                   "FileSystem", "Schemes", true);
-        resourceGroupManager->addResourceLocation("/usr/share/CEGUI/schemes",
+        resourceGroupManager->addResourceLocation("../resources/datafiles/schemes",
                                                   "FileSystem", "Schemes", true);
 
-        resourceGroupManager->addResourceLocation("/usr/share/CEGUI/looknfeel",
+        resourceGroupManager->addResourceLocation("../resources/datafiles/looknfeel",
                                                   "FileSystem", "LookAndFeel", true);
 
         resourceGroupManager->addResourceLocation("../resources/cegui/layouts",
                                                   "FileSystem", "Layouts", true);
-        resourceGroupManager->addResourceLocation("/usr/share/CEGUI/layouts",
+        resourceGroupManager->addResourceLocation("../resources/datafiles/layouts",
                                                   "FileSystem", "Layouts", true);
 
         CEGUI::Imageset::setDefaultResourceGroup("Imagesets");
@@ -101,7 +101,7 @@ namespace TiltBall
         Ogre::Root* ogreRoot = new Ogre::Root("", "");
 
         std::clog << "Acquiring rendering system..." << std::endl;
-        ogreRoot->loadPlugin("/usr/lib/OGRE/RenderSystem_GL.so");
+        ogreRoot->loadPlugin("/usr/lib/x86_64-linux-gnu/OGRE-1.7.4/RenderSystem_GL.so");
         Ogre::String name("OpenGL Rendering Subsystem");
         Ogre::RenderSystemList list = ogreRoot->getAvailableRenderers();
         Ogre::RenderSystemList::iterator iter = list.begin();
