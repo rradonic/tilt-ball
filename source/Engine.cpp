@@ -101,7 +101,7 @@ namespace TiltBall
         Ogre::Root* ogreRoot = new Ogre::Root("", "");
 
         std::clog << "Acquiring rendering system..." << std::endl;
-        ogreRoot->loadPlugin("/usr/lib/x86_64-linux-gnu/OGRE-1.7.4/RenderSystem_GL.so");
+        ogreRoot->loadPlugin("/usr/lib/x86_64-linux-gnu/OGRE-1.8.0/RenderSystem_GL.so");
         Ogre::String name("OpenGL Rendering Subsystem");
         Ogre::RenderSystemList list = ogreRoot->getAvailableRenderers();
         Ogre::RenderSystemList::iterator iter = list.begin();
@@ -275,8 +275,10 @@ namespace TiltBall
             btPersistentManifold* manifold =
                 p_world->getDispatcher()->getManifoldByIndexInternal(i);
 
-            btCollisionObject* object1 = static_cast<btCollisionObject*>(manifold->getBody0());
-            btCollisionObject* object2 = static_cast<btCollisionObject*>(manifold->getBody1());
+            const btCollisionObject* object1 =
+                static_cast<const btCollisionObject*>(manifold->getBody0());
+            const btCollisionObject* object2 =
+                static_cast<const btCollisionObject*>(manifold->getBody1());
 
             Ogre::SceneNode* object1Node = static_cast<Ogre::SceneNode*>(object1->getUserPointer());
             Ogre::SceneNode* object2Node = static_cast<Ogre::SceneNode*>(object2->getUserPointer());
