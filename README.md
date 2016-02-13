@@ -18,26 +18,15 @@ install the required libraries using your distro's package manager.
 Building
 --------
 
-The only two required libraries that aren't in the standard repos are the
-Bullet physics engine and the CEGUI user interface library. I have
-packaged both in a ppa on Launchpad:
+1) Install the libaries that the game needs.
 
-https://launchpad.net/~ranko-radonic/+archive/libs
+    sudo apt-get install cmake libbullet-dev libogre-1.8-dev libois-dev libcegui-mk2-dev libboost-regex-dev libopenal-dev libalut-dev libvorbis-dev libvorbisfile3
 
-Add that ppa to your apt-get configuration.
-
-    sudo add-apt-repository ppa:ranko-radonic/libs
-    sudo apt-get update
-
-Install the libaries that the game needs.
-
-    sudo apt-get install cmake libbullet-dev libogre-dev libois-dev libcegui-dev libboost-regex-dev libopenal-dev libalut-dev libvorbis-dev libvorbisfile3
-
-Fetch the game.
+2) Fetch the game.
 
     git clone git://github.com/rradonic/tilt-ball.git
 
-Build the game.
+3) Build the game.
 
     mkdir build
     cd build
@@ -60,6 +49,3 @@ Dependencies
 * ALUT (audio)
 * Vorbis (Ogg Vorbis decoding)
 * Vorbisfile (Ogg Vorbis decoding)
-
-
-TODO: Linux/Windows/MacOSX installation instructions
