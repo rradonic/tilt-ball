@@ -28,7 +28,7 @@ along with TiltBall.  If not, see <http://www.gnu.org/licenses/>.
 #include <btBulletDynamicsCommon.h>
 #include <CEGUI/CEGUI.h>
 #include <OGRE/Ogre.h>
-#include <CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h>
+#include <CEGUI/RendererModules/Ogre/Renderer.h>
 #include <OIS/OIS.h>
 #include <vector>
 

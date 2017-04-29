@@ -1,6 +1,7 @@
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(/usr/include/OGRE)
 include_directories(/usr/include/bullet)
+include_directories(/usr/include/cegui-0.8.4)
 
 add_executable(tilt-ball
   AudioSystem.cpp
