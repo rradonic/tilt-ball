@@ -5,6 +5,11 @@ TiltBall is a puzzle game in which the goal is to get the ball into
 the hole by tilting the maze. Levels are built using a plaintext level
 format, making level creation and editing easy.
 
+Demo video
+----------
+
+[![Tilt Ball demo video](http://img.youtube.com/vi/e5HwLi-JR-w/0.jpg)](http://www.youtube.com/watch?v=e5HwLi-JR-w "Tilt Ball demo video")
+
 Installation
 ------------
 
