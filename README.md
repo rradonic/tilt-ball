@@ -1,9 +1,15 @@
 TiltBall
 ========
 
-TiltBall is a puzzle game in which the goal is to get the ball into
-the hole by tilting the maze. Levels are built using a plaintext level
-format, making level creation and editing easy.
+TiltBall is a puzzle game in which the goal is to get the ball into the hole by tilting the maze.
+Levels are built using a plaintext level format, making level creation and editing easy. The
+current set of levels has been generated with one of the maze generation algorithms at
+http://github.com/rradonic/maze-generators.
+
+Demo
+----
+
+[![Demo Screenshot](/screenshot.png?raw=true)](https://www.youtube.com/watch?v=e5HwLi-JR-w)
 
 Installation
 ------------
